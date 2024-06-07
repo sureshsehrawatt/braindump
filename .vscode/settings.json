@@ -1,0 +1,9 @@
+{
+    "java.project.sourcePaths": [
+        "Java/basics/src",
+        "Java/advanced/generic/src",
+        "Java/OOPs/polymorphism/src",
+        "rough/springboot/myapp/src/main/java/com/boldbit/myapp"
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
+}
