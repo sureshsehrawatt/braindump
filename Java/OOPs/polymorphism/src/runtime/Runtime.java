@@ -1,4 +1,4 @@
-package Java.OOPs.polymorphism.src.runtime;
+package runtime;
 
 class Animal {
     void makeSound() {
@@ -11,6 +11,7 @@ class Dog extends Animal {
         System.out.println("Barking...");
     }
 }
+
 public class Runtime {
     public static void main(String[] args) {
         Animal obj = new Dog(); // upcasting
