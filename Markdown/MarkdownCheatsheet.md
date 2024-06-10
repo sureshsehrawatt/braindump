@@ -74,3 +74,7 @@ I need to highlight these ==very important words==.
 Subscript H~2~O
 
 Superscript X^2^
+
+Link Markdown files
+
+This is the second file. Go back to [File 1](../file1.md).
