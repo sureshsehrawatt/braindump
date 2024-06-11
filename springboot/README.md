@@ -2253,3 +2253,720 @@ Here's an example of using ORM in Spring Boot to create an entity class, reposit
 ### Conclusion
 
 ORM in Spring Boot simplifies database interactions by providing a higher-level abstraction over SQL queries and JDBC operations. By defining entity classes, repository interfaces, and configuring data sources, developers can easily perform CRUD operations on relational databases using familiar object-oriented techniques. ORM frameworks like Hibernate, coupled with Spring Boot's support for JPA, enable rapid development of database-driven applications with minimal boilerplate code.
+
+## RESTful Services Development
+
+## REST APIs
+
+REST APIs (Representational State Transfer Application Programming Interfaces) in Spring Boot enable developers to build web services that follow the REST architectural style. RESTful APIs are based on the principles of using standard HTTP methods (GET, POST, PUT, DELETE) and uniform resource identifiers (URIs) to interact with resources in a stateless manner. Spring Boot provides comprehensive support for building RESTful APIs efficiently.
+
+### Key Components and Concepts
+
+1. **Controller Classes**: Controllers in Spring Boot are responsible for handling incoming HTTP requests and returning appropriate responses. Controller classes typically contain methods annotated with `@GetMapping`, `@PostMapping`, `@PutMapping`, `@DeleteMapping`, etc., to map HTTP requests to specific endpoints.
+
+2. **Request Mapping**: Request mapping annotations (`@RequestMapping`, `@GetMapping`, `@PostMapping`, etc.) define the URL patterns and HTTP methods that the controller methods can handle. They specify the mapping between incoming requests and the corresponding handler methods in the controller.
+
+3. **Data Transfer Objects (DTOs)**: DTOs are Java classes that represent the data exchanged between the client and the server in RESTful APIs. They encapsulate request and response payloads, providing a structured format for data transmission. DTOs help decouple the API contract from the internal domain model of the application.
+
+4. **Service Layer**: Service classes contain business logic and orchestrate interactions between controllers and repositories. They encapsulate complex operations and facilitate code reuse and maintainability. Service classes are often injected into controller classes using dependency injection.
+
+5. **Repository Layer**: Repositories handle data access and database interactions in the application. They typically contain methods for CRUD operations on entities and are responsible for querying and persisting data in the underlying database.
+
+6. **Response Entities**: ResponseEntity objects encapsulate HTTP response status codes, headers, and body payloads. They allow controllers to customize the HTTP response returned to clients, providing flexibility in handling different scenarios and error conditions.
+
+7. **Exception Handling**: Spring Boot provides robust support for handling exceptions in RESTful APIs. Developers can define exception handler methods annotated with `@ExceptionHandler`, allowing them to gracefully handle exceptions and return appropriate error responses to clients.
+
+8. **Content Negotiation**: Content negotiation allows clients to specify the desired representation format (e.g., JSON, XML) in the request headers. Spring Boot supports content negotiation out-of-the-box, enabling clients to consume APIs in their preferred format.
+
+### Example Usage
+
+Here's a basic example of building a RESTful API in Spring Boot:
+
+1. **Define Controller**:
+
+```java
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello, World!";
+    }
+}
+```
+
+2. **Run Application**:
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MyApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(MyApplication.class, args);
+    }
+}
+```
+
+3. **Access API**:
+
+```
+GET http://localhost:8080/api/hello
+```
+
+### Conclusion
+
+RESTful APIs in Spring Boot enable developers to build scalable, robust, and interoperable web services using industry-standard practices. By leveraging Spring Boot's powerful features such as request mapping, DTOs, service and repository layers, response entities, and exception handling, developers can create RESTful APIs that are easy to develop, maintain, and consume. Spring Boot's convention-over-configuration approach and extensive ecosystem make it an ideal choice for building modern, cloud-native applications with RESTful APIs.
+
+## `@Controller`
+
+In Spring MVC, the `@Controller` annotation is used to mark a class as a controller component. Controllers handle incoming HTTP requests and determine the response to send back to the client. Here's a detailed description of the `@Controller` annotation:
+
+### Key Features and Usage
+
+1. **Component Annotation**: `@Controller` is a specialization of Spring's `@Component` annotation. It indicates that the annotated class is a controller component that handles HTTP requests. When Spring scans for components during application startup, classes annotated with `@Controller` are automatically identified as controllers.
+
+2. **Request Mapping**: Controllers typically contain handler methods that are annotated with `@RequestMapping`, `@GetMapping`, `@PostMapping`, `@PutMapping`, `@DeleteMapping`, etc. These annotations define the mapping between incoming HTTP requests and the methods that handle those requests. For example, `@GetMapping("/users")` maps a GET request to the `/users` URI to a specific controller method.
+
+3. **Model and View Handling**: Controller methods return either a `ModelAndView` object or a logical view name. A `ModelAndView` combines model data with a view template, while a logical view name corresponds to a view template that Spring resolves and renders. Controllers can populate model data and choose the appropriate view to render based on the request.
+
+4. **HTTP Method Handling**: By default, controller methods support all HTTP methods (GET, POST, PUT, DELETE, etc.). Developers can use method-specific annotations like `@GetMapping`, `@PostMapping`, etc., to explicitly map methods to specific HTTP methods. This helps organize the controller and improves readability.
+
+5. **Request and Response Parameters**: Controller methods can accept request parameters, path variables, request headers, request bodies, etc., as method parameters. Spring automatically binds request data to method parameters based on parameter annotations like `@RequestParam`, `@PathVariable`, `@RequestBody`, etc. Similarly, controllers can return different types of responses, including JSON, XML, HTML, etc., based on client requirements.
+
+### Example Usage
+
+Here's a simple example of a controller class annotated with `@Controller`:
+
+```java
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+@RequestMapping("/hello")
+public class HelloController {
+
+    @GetMapping
+    @ResponseBody
+    public String sayHello() {
+        return "Hello, World!";
+    }
+}
+```
+
+In this example:
+- The `HelloController` class is annotated with `@Controller`, marking it as a controller component.
+- The `@RequestMapping("/hello")` annotation specifies that all endpoints in this controller are relative to the `/hello` URI.
+- The `sayHello()` method is annotated with `@GetMapping` to handle GET requests at the `/hello` URI. The `@ResponseBody` annotation indicates that the return value of the method should be directly written to the HTTP response body.
+
+### Conclusion
+
+The `@Controller` annotation in Spring MVC identifies a class as a controller component responsible for handling HTTP requests. By combining `@Controller` with method-specific annotations and parameter annotations, developers can create flexible and powerful controllers to handle various types of requests and produce different types of responses.
+
+## `@RestController`
+
+The `@RestController` annotation in Spring Boot is a specialized version of the `@Controller` annotation that is used to define RESTful web services. It combines the functionality of `@Controller` and `@ResponseBody` annotations, making it convenient for building APIs that return data in JSON, XML, or any other format.
+
+### Key Features and Usage
+
+1. **Specialization of @Controller**: `@RestController` is a specialization of the `@Controller` annotation, indicating that the annotated class is a controller that handles incoming HTTP requests. It is typically used to define the endpoints of a RESTful API.
+
+2. **Response Body Serialization**: Unlike traditional Spring MVC controllers, which return views or model objects, `@RestController` methods return the actual response body data. Spring Boot automatically serializes the return value of these methods to the appropriate format (e.g., JSON or XML) using message converters.
+
+3. **Convenience Annotation**: By combining `@Controller` and `@ResponseBody`, `@RestController` eliminates the need to annotate each individual request-handling method with `@ResponseBody`. It simplifies the process of building RESTful APIs by providing a single annotation for defining both the controller and the response body behavior.
+
+4. **Mapping to Request URIs**: `@RestController` classes and methods can be mapped to specific request URIs using `@RequestMapping`, `@GetMapping`, `@PostMapping`, `@PutMapping`, `@DeleteMapping`, etc., annotations. These annotations define the URL patterns and HTTP methods that the controller methods can handle.
+
+5. **Flexible Content Negotiation**: Spring Boot supports content negotiation out-of-the-box, allowing clients to specify the desired representation format (e.g., JSON, XML) in the request headers. `@RestController` methods automatically serialize response data to the requested format based on the content negotiation settings.
+
+### Example Usage
+
+Here's an example of using `@RestController` to define a simple RESTful API endpoint:
+
+```java
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello, World!";
+    }
+}
+```
+
+In this example:
+- The `HelloController` class is annotated with `@RestController`, indicating that it is a REST controller.
+- The `@RequestMapping` annotation at the class level specifies the base URI for all endpoints defined in the controller.
+- The `@GetMapping` annotation on the `sayHello` method defines a GET endpoint at the `/api/hello` URI. When accessed, this endpoint returns the string "Hello, World!" as the response body.
+
+### Conclusion
+
+`@RestController` in Spring Boot simplifies the development of RESTful APIs by combining the functionality of `@Controller` and `@ResponseBody` annotations into a single convenient annotation. It allows developers to define endpoints that return data directly without the need for additional annotations, making it easier to build APIs that follow REST principles and communicate with clients over HTTP.
+
+## `@Controller` vs `@RestController`
+
+The `@Controller` and `@RestController` annotations in Spring MVC are both used to define classes as controllers, but they have different behaviors and purposes. Here's the difference between them:
+
+1. **Purpose**:
+   - `@Controller`: The `@Controller` annotation is used to create a traditional MVC controller in Spring MVC. It is typically used to handle web requests and generate HTML views. Controllers annotated with `@Controller` return `ModelAndView` objects or logical view names, which are then resolved to view templates for rendering HTML responses.
+   - `@RestController`: The `@RestController` annotation, on the other hand, is a specialized version of `@Controller` that is tailored for building RESTful web services. It combines the `@Controller` and `@ResponseBody` annotations, indicating that the annotated class is a REST controller that returns data directly in the response body. Controllers annotated with `@RestController` automatically serialize the return value of methods to JSON or XML (depending on the client's request) using message converters.
+
+2. **Response Handling**:
+   - `@Controller`: Controllers annotated with `@Controller` typically return view names or `ModelAndView` objects, which are resolved to view templates for rendering HTML responses. These controllers are primarily used to generate HTML responses for web applications.
+   - `@RestController`: Controllers annotated with `@RestController` return data directly in the response body, bypassing the view resolution process. The return value of controller methods is serialized to JSON or XML (depending on the client's request) and sent as the response body. These controllers are ideal for building RESTful APIs that communicate with clients over HTTP.
+
+3. **Response Serialization**:
+   - `@Controller`: Controllers annotated with `@Controller` do not automatically serialize the return value of methods to JSON or XML. Instead, developers need to use view resolvers or model attributes to render the response body as HTML.
+   - `@RestController`: Controllers annotated with `@RestController` automatically serialize the return value of methods to JSON or XML using message converters. This eliminates the need for manual serialization and simplifies the process of building RESTful APIs.
+
+4. **Usage**:
+   - `@Controller`: Use `@Controller` when building traditional web applications that generate HTML responses and render views using view templates.
+   - `@RestController`: Use `@RestController` when building RESTful web services or APIs that return data directly in the response body, typically in JSON or XML format.
+
+In summary, while both `@Controller` and `@RestController` are used to define classes as controllers in Spring MVC, `@RestController` is specifically designed for building RESTful web services that return data directly in the response body, while `@Controller` is used for generating HTML views in traditional web applications.
+
+## `@RequestBody`
+
+The `@RequestBody` annotation in Spring Boot is used to bind the HTTP request body to a method parameter in a controller handler method. It indicates that the method parameter should be populated with the body of the HTTP request.
+
+### Key Features and Usage
+
+1. **Binding Request Body**: When a controller method is annotated with `@RequestBody`, Spring Boot automatically converts the request body into the specified method parameter's type. It uses message converters to deserialize the request body, allowing for seamless conversion from JSON, XML, or other formats into Java objects.
+
+2. **Support for Various Content Types**: `@RequestBody` supports various content types, including JSON, XML, form data, and others. Spring Boot automatically selects the appropriate message converter based on the `Content-Type` header of the incoming request.
+
+3. **Automatic Deserialization**: Spring Boot automatically deserializes the request body into the specified method parameter's type using configured message converters. This simplifies the handling of complex request payloads, as developers do not need to manually parse the request body.
+
+4. **Flexible Parameter Types**: The method parameter annotated with `@RequestBody` can be of any type, including custom Java objects, collections, arrays, or simple data types. Spring Boot attempts to deserialize the request body into the specified parameter type.
+
+### Example Usage
+
+Here's an example of using `@RequestBody` in a Spring Boot controller:
+
+```java
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+
+@RestController
+@RequestMapping("/api")
+public class MyController {
+
+    @PostMapping("/data")
+    public String processData(@RequestBody MyDataObject data) {
+        // Process the received data object
+        return "Received data: " + data.toString();
+    }
+}
+```
+
+In this example:
+- The `processData` method is annotated with `@PostMapping("/data")` to handle POST requests to the `/api/data` endpoint.
+- The `@RequestBody` annotation is applied to the `data` parameter, indicating that it should be populated with the request body.
+- When a POST request is made to `/api/data` with a JSON or XML payload representing a `MyDataObject`, Spring Boot automatically converts the request body into a `MyDataObject` instance and passes it to the `processData` method.
+
+### Conclusion
+
+The `@RequestBody` annotation in Spring Boot simplifies the handling of HTTP request bodies in controller methods. By automatically binding the request body to method parameters, developers can easily extract data from incoming requests and process it in their applications. `@RequestBody` is essential for building RESTful APIs that communicate with clients over HTTP and handle complex request payloads efficiently.
+
+## `@ResponseBody`
+
+The `@ResponseBody` annotation in Spring Boot is used to indicate that the return value of a controller method should be written directly to the HTTP response body. It tells Spring Boot that the return value of the method should be serialized and sent as the response body, without further processing as a view or template.
+
+### Key Features and Usage
+
+1. **Direct Response Writing**: When a controller method is annotated with `@ResponseBody`, Spring Boot bypasses the view resolution process and writes the return value directly to the HTTP response body. This allows developers to return custom objects, strings, or any other data directly as the response body.
+
+2. **Flexible Response Types**: The return value of a method annotated with `@ResponseBody` can be of any type, including custom Java objects, collections, arrays, or simple data types. Spring Boot automatically serializes the return value into JSON, XML, or other formats based on the configured message converters.
+
+3. **Support for Various Content Types**: `@ResponseBody` supports various content types, including JSON, XML, plain text, and others. Spring Boot automatically selects the appropriate message converter based on the `Accept` header of the incoming request.
+
+4. **Integration with Other Annotations**: `@ResponseBody` is often used in conjunction with other annotations like `@RequestMapping`, `@GetMapping`, `@PostMapping`, etc., to define RESTful API endpoints. By combining these annotations, developers can create controllers that return data directly in the desired format.
+
+### Example Usage
+
+Here's an example of using `@ResponseBody` in a Spring Boot controller:
+
+```java
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
+public class MyController {
+
+    @GetMapping("/hello")
+    @ResponseBody
+    public String sayHello() {
+        return "Hello, World!";
+    }
+}
+```
+
+In this example:
+- The `sayHello` method is annotated with `@GetMapping("/hello")` to handle GET requests to the `/api/hello` endpoint.
+- The `@ResponseBody` annotation is applied to the method, indicating that the return value should be written directly to the HTTP response body.
+- When a GET request is made to `/api/hello`, Spring Boot serializes the string "Hello, World!" and sends it as the response body.
+
+### Conclusion
+
+The `@ResponseBody` annotation in Spring Boot allows developers to return data directly as the HTTP response body from controller methods. By bypassing the view resolution process, `@ResponseBody` simplifies the creation of RESTful APIs and enables flexible handling of response data. It is an essential annotation for building web services and APIs that communicate with clients over HTTP.
+
+### is @ResponseBody annotation is compulsory to annotate
+
+No, the `@ResponseBody` annotation is not compulsory to annotate controller methods in Spring Boot. When a method returns a value from a controller method without being annotated with `@ResponseBody`, Spring Boot automatically assumes that the return value should be resolved as a view name or a `ModelAndView` object. 
+
+However, if you want the return value of the method to be written directly to the HTTP response body without view resolution, then you should use `@ResponseBody`. 
+
+In summary, whether you use `@ResponseBody` depends on whether you want to return data directly in the response body or if you need the view resolution mechanism provided by Spring MVC.
+
+## `@RequestMapping`
+
+The `@RequestMapping` annotation in Spring MVC is a versatile annotation used to map HTTP requests to handler methods in a controller. It provides a flexible way to define request mappings based on various criteria such as URL paths, request methods, request headers, request parameters, and more.
+
+### Key Features and Usage
+
+1. **Mapping URI Paths**: `@RequestMapping` allows you to specify one or more URI paths that will be mapped to the annotated handler method. These paths define the endpoints at which the method will respond to HTTP requests.
+
+2. **Specifying Request Methods**: You can specify one or more HTTP request methods (GET, POST, PUT, DELETE, etc.) using the `method` attribute of `@RequestMapping`. This allows you to restrict the handler method to only handle requests of specific methods.
+
+3. **Request Parameters and Headers**: `@RequestMapping` supports attributes like `params` and `headers` to further refine the mapping criteria. You can specify required request parameters or headers that must be present for the mapping to be used.
+
+4. **Content Negotiation**: The `consumes` and `produces` attributes allow you to specify the content types that the handler method can consume or produce. This is useful for handling requests with specific content types and returning responses in different formats.
+
+5. **Multiple Mappings**: You can apply `@RequestMapping` to both class-level and method-level. At the class level, it defines a base URI for all mappings within the controller, while at the method level, it defines specific mappings for individual handler methods.
+
+### Example Usage
+
+Here's an example of using `@RequestMapping` in a Spring MVC controller:
+
+```java
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
+public class MyController {
+
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    public String sayHello() {
+        return "Hello, World!";
+    }
+
+    @RequestMapping(value = "/greet", method = RequestMethod.POST, consumes = "application/json", produces = "text/plain")
+    public String greet(@RequestBody String name) {
+        return "Hello, " + name + "!";
+    }
+}
+```
+
+In this example:
+- The `sayHello` method responds to GET requests at the `/api/hello` endpoint.
+- The `greet` method responds to POST requests at the `/api/greet` endpoint, consuming JSON content and producing plain text responses.
+
+### Conclusion
+
+The `@RequestMapping` annotation in Spring MVC is a powerful tool for defining request mappings and handling HTTP requests in controller classes. By specifying various attributes, you can customize the mapping criteria to suit your application's needs and create flexible and robust APIs.
+
+## `@GetMapping`
+
+The `@GetMapping` annotation in Spring MVC is a specialized form of the more general `@RequestMapping` annotation, tailored specifically for mapping HTTP GET requests to handler methods in a controller. It provides a concise and readable way to define GET request mappings.
+
+### Key Features and Usage
+
+1. **Mapping URI Paths**: Similar to `@RequestMapping`, `@GetMapping` allows you to specify one or more URI paths that will be mapped to the annotated handler method. These paths define the endpoints at which the method will respond to HTTP GET requests.
+
+2. **No Need to Specify Request Method**: Unlike `@RequestMapping`, `@GetMapping` specifically handles HTTP GET requests. Therefore, there's no need to explicitly specify the request method using attributes like `method`. This simplifies the code and makes it more readable.
+
+3. **Content Negotiation**: Just like `@RequestMapping`, `@GetMapping` supports content negotiation through attributes like `consumes` and `produces`. You can specify the content types that the handler method can consume or produce.
+
+4. **Integration with Path Variables**: You can easily integrate path variables into `@GetMapping` mappings using the `@PathVariable` annotation. Path variables allow you to extract dynamic values from the URI path and use them as method parameters.
+
+5. **Multiple Mappings**: Similar to `@RequestMapping`, `@GetMapping` can be applied at both class-level and method-level. At the class level, it defines a base URI for all mappings within the controller, while at the method level, it defines specific mappings for individual handler methods.
+
+### Example Usage
+
+Here's an example of using `@GetMapping` in a Spring MVC controller:
+
+```java
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
+public class MyController {
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello, World!";
+    }
+
+    @GetMapping("/greet/{name}")
+    public String greet(@PathVariable String name) {
+        return "Hello, " + name + "!";
+    }
+}
+```
+
+In this example:
+- The `sayHello` method responds to GET requests at the `/api/hello` endpoint.
+- The `greet` method responds to GET requests at the `/api/greet/{name}` endpoint, where `{name}` is a path variable representing the name of the person to greet.
+
+### Conclusion
+
+`@GetMapping` is a convenient and expressive annotation for mapping HTTP GET requests to handler methods in Spring MVC controllers. Its simplicity and clarity make it a preferred choice for defining GET request mappings in RESTful APIs and web applications.
+
+## `@PostMapping`
+
+The `@PostMapping` annotation in Spring MVC is a specialized form of the more general `@RequestMapping` annotation, specifically designed for mapping HTTP POST requests to handler methods in a controller. It provides a concise and expressive way to define POST request mappings.
+
+### Key Features and Usage
+
+1. **Mapping URI Paths**: Similar to `@RequestMapping`, `@PostMapping` allows you to specify one or more URI paths that will be mapped to the annotated handler method. These paths define the endpoints at which the method will respond to HTTP POST requests.
+
+2. **Explicitly Handles POST Requests**: Unlike `@RequestMapping`, which can handle requests of any HTTP method, `@PostMapping` is specifically designed to handle HTTP POST requests. Therefore, there's no need to explicitly specify the request method using attributes like `method`.
+
+3. **Content Negotiation**: `@PostMapping` supports content negotiation through attributes like `consumes` and `produces`. You can specify the content types that the handler method can consume or produce.
+
+4. **Integration with Request Body**: It's common for POST requests to contain data in the request body. `@PostMapping` seamlessly integrates with the `@RequestBody` annotation to deserialize the request body into method parameters.
+
+5. **Multiple Mappings**: Similar to other request mapping annotations, `@PostMapping` can be applied at both class-level and method-level. At the class level, it defines a base URI for all mappings within the controller, while at the method level, it defines specific mappings for individual handler methods.
+
+### Example Usage
+
+Here's an example of using `@PostMapping` in a Spring MVC controller:
+
+```java
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
+public class MyController {
+
+    @PostMapping("/create")
+    public ResponseEntity<String> createEntity(@RequestBody Entity entity) {
+        // Logic to create the entity
+        return ResponseEntity.ok("Entity created successfully");
+    }
+}
+```
+
+In this example:
+- The `createEntity` method responds to POST requests at the `/api/create` endpoint.
+- It expects an `Entity` object in the request body, which is automatically deserialized using the `@RequestBody` annotation.
+- After processing the request, it returns a response entity with an "Entity created successfully" message.
+
+### Conclusion
+
+`@PostMapping` is a powerful annotation for mapping HTTP POST requests to handler methods in Spring MVC controllers. Its simplicity and specificity make it ideal for defining POST request mappings in RESTful APIs and web applications. By seamlessly integrating with request bodies and supporting content negotiation, `@PostMapping` simplifies the handling of POST requests and enhances developer productivity.
+
+## `@PutMapping`
+
+The `@PutMapping` annotation in Spring MVC is a specialized form of the more general `@RequestMapping` annotation, specifically tailored for mapping HTTP PUT requests to handler methods in a controller. It provides a concise and expressive way to define PUT request mappings.
+
+### Key Features and Usage
+
+1. **Mapping URI Paths**: Similar to `@RequestMapping`, `@PutMapping` allows you to specify one or more URI paths that will be mapped to the annotated handler method. These paths define the endpoints at which the method will respond to HTTP PUT requests.
+
+2. **Explicitly Handles PUT Requests**: Unlike `@RequestMapping`, which can handle requests of any HTTP method, `@PutMapping` is specifically designed to handle HTTP PUT requests. Therefore, there's no need to explicitly specify the request method using attributes like `method`.
+
+3. **Content Negotiation**: `@PutMapping` supports content negotiation through attributes like `consumes` and `produces`. You can specify the content types that the handler method can consume or produce.
+
+4. **Integration with Request Body**: It's common for PUT requests to contain data in the request body. `@PutMapping` seamlessly integrates with the `@RequestBody` annotation to deserialize the request body into method parameters.
+
+5. **Multiple Mappings**: Similar to other request mapping annotations, `@PutMapping` can be applied at both class-level and method-level. At the class level, it defines a base URI for all mappings within the controller, while at the method level, it defines specific mappings for individual handler methods.
+
+### Example Usage
+
+Here's an example of using `@PutMapping` in a Spring MVC controller:
+
+```java
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
+public class MyController {
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateEntity(@PathVariable Long id, @RequestBody Entity entity) {
+        // Logic to update the entity with the given id
+        return ResponseEntity.ok("Entity updated successfully");
+    }
+}
+```
+
+In this example:
+- The `updateEntity` method responds to PUT requests at the `/api/update/{id}` endpoint.
+- It expects an `Entity` object in the request body, which is automatically deserialized using the `@RequestBody` annotation.
+- The `id` path variable is extracted from the URI and used to identify the entity to be updated.
+- After processing the request, it returns a response entity with an "Entity updated successfully" message.
+
+### Conclusion
+
+`@PutMapping` is a powerful annotation for mapping HTTP PUT requests to handler methods in Spring MVC controllers. Its specificity and simplicity make it ideal for defining PUT request mappings in RESTful APIs and web applications. By seamlessly integrating with request bodies and supporting content negotiation, `@PutMapping` simplifies the handling of PUT requests and enhances developer productivity.
+
+## `@DeleteMapping`
+
+The `@DeleteMapping` annotation in Spring MVC is a specialized form of the more general `@RequestMapping` annotation, specifically designed for mapping HTTP DELETE requests to handler methods in a controller. It provides a concise and expressive way to define DELETE request mappings.
+
+### Key Features and Usage
+
+1. **Mapping URI Paths**: Similar to `@RequestMapping`, `@DeleteMapping` allows you to specify one or more URI paths that will be mapped to the annotated handler method. These paths define the endpoints at which the method will respond to HTTP DELETE requests.
+
+2. **Explicitly Handles DELETE Requests**: Unlike `@RequestMapping`, which can handle requests of any HTTP method, `@DeleteMapping` is specifically designed to handle HTTP DELETE requests. Therefore, there's no need to explicitly specify the request method using attributes like `method`.
+
+3. **Content Negotiation**: `@DeleteMapping` supports content negotiation through attributes like `consumes` and `produces`. You can specify the content types that the handler method can consume or produce.
+
+4. **Integration with Path Variables**: It's common for DELETE requests to include path variables in the URI to identify the resource to be deleted. `@DeleteMapping` seamlessly integrates with the `@PathVariable` annotation to extract these variables from the URI.
+
+5. **Multiple Mappings**: Similar to other request mapping annotations, `@DeleteMapping` can be applied at both class-level and method-level. At the class level, it defines a base URI for all mappings within the controller, while at the method level, it defines specific mappings for individual handler methods.
+
+### Example Usage
+
+Here's an example of using `@DeleteMapping` in a Spring MVC controller:
+
+```java
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
+public class MyController {
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteEntity(@PathVariable Long id) {
+        // Logic to delete the entity with the given id
+        return ResponseEntity.ok("Entity deleted successfully");
+    }
+}
+```
+
+In this example:
+- The `deleteEntity` method responds to DELETE requests at the `/api/delete/{id}` endpoint.
+- It expects an `id` path variable in the URI, which is automatically extracted using the `@PathVariable` annotation.
+- The extracted `id` is used to identify the entity to be deleted.
+- After processing the request, it returns a response entity with an "Entity deleted successfully" message.
+
+### Conclusion
+
+`@DeleteMapping` is a powerful annotation for mapping HTTP DELETE requests to handler methods in Spring MVC controllers. Its specificity and simplicity make it ideal for defining DELETE request mappings in RESTful APIs and web applications. By seamlessly integrating with path variables and supporting content negotiation, `@DeleteMapping` simplifies the handling of DELETE requests and enhances developer productivity.
+
+## `@PatchMapping` 
+
+In Spring MVC, there isn't a specific annotation like `@PatchMapping` dedicated solely to handling HTTP PATCH requests. However, you can still handle PATCH requests using the generic `@RequestMapping` annotation with the appropriate `method` attribute set to `RequestMethod.PATCH`.
+
+Here's an example of how you can handle PATCH requests in a Spring MVC controller:
+
+```java
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
+public class MyController {
+
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<String> updateEntity(@PathVariable Long id, @RequestBody Entity entity) {
+        // Logic to update the entity with the given id using PATCH request
+        return ResponseEntity.ok("Entity updated successfully");
+    }
+}
+```
+
+In this example:
+- The `@PatchMapping` annotation is used to specifically handle PATCH requests at the `/api/update/{id}` endpoint.
+- The `@PathVariable` annotation is used to extract the `id` from the URI path.
+- The `@RequestBody` annotation is used to deserialize the request body into an `Entity` object.
+- The method logic performs the necessary updates to the entity identified by the `id`.
+- Finally, a response entity with a success message is returned.
+
+While there isn't a dedicated `@PatchMapping` annotation, you can achieve the same functionality using `@RequestMapping` with the appropriate `method` attribute set to `RequestMethod.PATCH`.
+
+## `ResponseEntity`
+
+`ResponseEntity` in Spring MVC is a class that represents an HTTP response entity, allowing you to customize the HTTP response returned by a controller method. It provides flexibility in constructing and sending responses with custom status codes, headers, and bodies.
+
+### Key Features and Usage
+
+1. **Customizing Response Status**: You can specify the HTTP status code to be returned in the response using `ResponseEntity.status(HttpStatus status)`. This allows you to indicate the success or failure of the request.
+
+2. **Setting Response Headers**: You can add custom HTTP headers to the response using `ResponseEntity.header(String headerName, String headerValue)` or `ResponseEntity.headers(HttpHeaders headers)`. This is useful for including metadata or controlling client behavior.
+
+3. **Setting Response Body**: You can set the body of the response using `ResponseEntity.body(T body)`. The body can be any object representing the data to be sent back to the client. It could be a string, a POJO, or any other data type.
+
+4. **Combining Status, Headers, and Body**: `ResponseEntity` provides convenience methods like `ResponseEntity.ok()`, `ResponseEntity.created()`, `ResponseEntity.accepted()`, etc., to create a response entity with common status codes. You can then further customize the response by chaining methods to set headers and body.
+
+5. **Handling Errors**: `ResponseEntity` is commonly used in error handling scenarios, where you can construct a response entity with an appropriate error status code, along with an error message or details.
+
+### Example Usage
+
+Here's an example of using `ResponseEntity` in a Spring MVC controller:
+
+```java
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
+public class MyController {
+
+    @GetMapping("/data")
+    public ResponseEntity<String> getData() {
+        // Simulated data retrieval
+        String data = "Hello, World!";
+        
+        // Construct ResponseEntity with custom status and body
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE)
+                .body(data);
+    }
+    
+    @PostMapping("/create")
+    public ResponseEntity<String> createData(@RequestBody String newData) {
+        // Logic to create new data
+        // Assuming successful creation
+        return ResponseEntity.created(URI.create("/api/data/" + newData))
+                .build();
+    }
+    
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception e) {
+        // Handling unexpected exceptions
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("An error occurred: " + e.getMessage());
+    }
+}
+```
+
+In this example:
+- The `getData` method returns a response entity with a status of 200 OK, a content type of text/plain, and the body containing the string "Hello, World!".
+- The `createData` method returns a response entity with a status of 201 Created, indicating successful creation of a new resource, along with the URI of the newly created resource.
+- The `handleException` method handles unexpected exceptions by returning a response entity with a status of 500 Internal Server Error and an error message.
+
+### Conclusion
+
+`ResponseEntity` in Spring MVC provides a flexible and powerful mechanism for customizing HTTP responses returned by controller methods. It allows you to control the status code, headers, and body of the response, making it suitable for a wide range of use cases, including data retrieval, resource creation, error handling, and more.
+
+## `@PathVariable`
+
+The `@PathVariable` annotation in Spring Boot is used to extract values from the URI path and bind them to method parameters in your controller.
+
+### Key Features
+
+1. **Extracting Path Variables**: Captures dynamic parts of the URI and assigns them to method parameters.
+2. **Flexible Mapping**: Supports mapping dynamic parts of the URL to method parameters.
+3. **Data Binding**: Automatically converts path variables to the desired data type.
+
+### Example
+
+Here's an example of how to use `@PathVariable` in a Spring Boot application.
+
+1. **Create a Controller**:
+
+```java
+package com.example.demo.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+
+    @GetMapping("/hello/{name}")
+    public String sayHello(@PathVariable String name) {
+        return "Hello, " + name + "!";
+    }
+}
+```
+
+### Explanation
+
+- **@GetMapping**: Maps HTTP GET requests to the `/hello/{name}` endpoint.
+- **@PathVariable**: Binds the `{name}` path variable to the method parameter `name`.
+- **Dynamic URI**: Allows clients to access `/hello/{name}` and pass a name dynamically in the URL.
+
+### Usage
+
+When a client accesses `/hello/John`, the `sayHello` method will receive "John" as the value for the `name` parameter and return "Hello, John!".
+
+### Multiple Path Variables
+
+You can use multiple `@PathVariable` annotations to capture multiple dynamic parts of the URI.
+
+```java
+@GetMapping("/hello/{firstName}/{lastName}")
+public String sayHello(@PathVariable String firstName, @PathVariable String lastName) {
+    return "Hello, " + firstName + " " + lastName + "!";
+}
+```
+
+### Path Variable with Data Type Conversion
+
+Spring automatically converts path variables to the desired data type.
+
+```java
+@GetMapping("/hello/{age}")
+public String greetAge(@PathVariable int age) {
+    return "Hello, you are " + age + " years old!";
+}
+```
+
+### Summary
+
+- **@PathVariable**: Extracts dynamic parts of the URI and binds them to method parameters.
+- **Dynamic Mapping**: Allows flexible mapping of dynamic segments in the URL.
+- **Data Binding**: Automatically converts path variables to the desired data type.
+
+Using `@PathVariable` in Spring Boot simplifies the handling of dynamic parts of URLs in your RESTful web services, making it easy to create dynamic and flexible APIs.
+
+## `@PathVariable` and `@RequestParam`
+
+Handling path variables and request parameters in Spring MVC allows you to extract data from the URI and request parameters of an incoming HTTP request. This data can then be used by your controller methods to process the request and generate an appropriate response. Path variables are part of the URI path, while request parameters are passed as key-value pairs in the query string of the URL.
+
+### Handling Path Variables
+
+Path variables are placeholders in the URI path that capture dynamic values. They are specified within curly braces `{}` in the `@RequestMapping` annotation and are extracted using the `@PathVariable` annotation in the controller method parameters.
+
+Example:
+```java
+@GetMapping("/users/{id}")
+public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    // Logic to retrieve user with the given id
+}
+```
+
+### Handling Request Parameters
+
+Request parameters are key-value pairs passed in the query string of the URL. They are typically used for filtering, sorting, or providing additional data to the server.
+
+Example:
+```java
+@GetMapping("/users")
+public ResponseEntity<List<User>> getUsersByRole(@RequestParam("role") String role) {
+    // Logic to retrieve users with the specified role
+}
+```
+
+### Combined Usage
+
+You can also use both path variables and request parameters in the same request mapping.
+
+Example:
+```java
+@GetMapping("/users/{id}/posts")
+public ResponseEntity<List<Post>> getUserPosts(
+        @PathVariable Long id,
+        @RequestParam(name = "category", required = false) String category) {
+    // Logic to retrieve posts for the user with the specified id
+    // Optionally filter by category if provided
+}
+```
+
+### Conclusion
+
+Handling path variables and request parameters in Spring MVC allows you to create flexible and dynamic endpoints that can process different types of requests. By using annotations like `@PathVariable` and `@RequestParam`, you can easily extract data from the URI and request parameters and use it within your controller methods to generate the appropriate response. This enables you to build robust and customizable RESTful APIs and web applications.

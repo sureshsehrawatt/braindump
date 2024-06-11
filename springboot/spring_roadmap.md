@@ -37,11 +37,11 @@
 
 ## RESTful Services Development
 
-- [ ] REST APIs
-- [ ] (GET, POST, PUT, DELETE)
-- [ ] (`@RestController`, `@RequestBody`, `@PathVariable`, `@Mappings`)
-- [ ] ResponseEntity
-- [ ] Handling Path Variables and Request Parameters
+- [x] REST APIs
+- [x] (GET, POST, PUT, DELETE)
+- [x] (`@RestController`, `@RequestBody`, `@PathVariable`, `@Mappings`)
+- [x] ResponseEntity
+- [x] Handling Path Variables and Request Parameters
 - [ ] Repository/DAO Layer
 - [ ] (JPA
 - [ ] JDBC
@@ -105,4 +105,4 @@
 
 
 git msg = Author | Project Name | Category | Topic name
-example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | ORM in Spring Boot"
+example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | RESTful Services Development"
