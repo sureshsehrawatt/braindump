@@ -20,10 +20,10 @@
   - [x] `@Configuration`
   - [ ] `@Transactional`
   - [ ] `@EnableTransactionManagement`
-  - [ ] `@MongoTransactionManager`
-  - [ ] `@Entity`
+  - [x] `@MongoTransactionManager`
+  - [x] `@Entity`
   - [ ] `@Document`
-  - [ ] `@DBRef`
+  - [x] `@DBRef`
   - [ ] `@Value`
   - [ ] `@PostConstruct`
   - [ ] `@Scheduled`

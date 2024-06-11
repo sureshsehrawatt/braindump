@@ -2362,6 +2362,7 @@ public class HelloController {
 ```
 
 In this example:
+
 - The `HelloController` class is annotated with `@Controller`, marking it as a controller component.
 - The `@RequestMapping("/hello")` annotation specifies that all endpoints in this controller are relative to the `/hello` URI.
 - The `sayHello()` method is annotated with `@GetMapping` to handle GET requests at the `/hello` URI. The `@ResponseBody` annotation indicates that the return value of the method should be directly written to the HTTP response body.
@@ -2405,6 +2406,7 @@ public class HelloController {
 ```
 
 In this example:
+
 - The `HelloController` class is annotated with `@RestController`, indicating that it is a REST controller.
 - The `@RequestMapping` annotation at the class level specifies the base URI for all endpoints defined in the controller.
 - The `@GetMapping` annotation on the `sayHello` method defines a GET endpoint at the `/api/hello` URI. When accessed, this endpoint returns the string "Hello, World!" as the response body.
@@ -2418,14 +2420,17 @@ In this example:
 The `@Controller` and `@RestController` annotations in Spring MVC are both used to define classes as controllers, but they have different behaviors and purposes. Here's the difference between them:
 
 1. **Purpose**:
+
    - `@Controller`: The `@Controller` annotation is used to create a traditional MVC controller in Spring MVC. It is typically used to handle web requests and generate HTML views. Controllers annotated with `@Controller` return `ModelAndView` objects or logical view names, which are then resolved to view templates for rendering HTML responses.
    - `@RestController`: The `@RestController` annotation, on the other hand, is a specialized version of `@Controller` that is tailored for building RESTful web services. It combines the `@Controller` and `@ResponseBody` annotations, indicating that the annotated class is a REST controller that returns data directly in the response body. Controllers annotated with `@RestController` automatically serialize the return value of methods to JSON or XML (depending on the client's request) using message converters.
 
 2. **Response Handling**:
+
    - `@Controller`: Controllers annotated with `@Controller` typically return view names or `ModelAndView` objects, which are resolved to view templates for rendering HTML responses. These controllers are primarily used to generate HTML responses for web applications.
    - `@RestController`: Controllers annotated with `@RestController` return data directly in the response body, bypassing the view resolution process. The return value of controller methods is serialized to JSON or XML (depending on the client's request) and sent as the response body. These controllers are ideal for building RESTful APIs that communicate with clients over HTTP.
 
 3. **Response Serialization**:
+
    - `@Controller`: Controllers annotated with `@Controller` do not automatically serialize the return value of methods to JSON or XML. Instead, developers need to use view resolvers or model attributes to render the response body as HTML.
    - `@RestController`: Controllers annotated with `@RestController` automatically serialize the return value of methods to JSON or XML using message converters. This eliminates the need for manual serialization and simplifies the process of building RESTful APIs.
 
@@ -2470,6 +2475,7 @@ public class MyController {
 ```
 
 In this example:
+
 - The `processData` method is annotated with `@PostMapping("/data")` to handle POST requests to the `/api/data` endpoint.
 - The `@RequestBody` annotation is applied to the `data` parameter, indicating that it should be populated with the request body.
 - When a POST request is made to `/api/data` with a JSON or XML payload representing a `MyDataObject`, Spring Boot automatically converts the request body into a `MyDataObject` instance and passes it to the `processData` method.
@@ -2512,6 +2518,7 @@ public class MyController {
 ```
 
 In this example:
+
 - The `sayHello` method is annotated with `@GetMapping("/hello")` to handle GET requests to the `/api/hello` endpoint.
 - The `@ResponseBody` annotation is applied to the method, indicating that the return value should be written directly to the HTTP response body.
 - When a GET request is made to `/api/hello`, Spring Boot serializes the string "Hello, World!" and sends it as the response body.
@@ -2522,9 +2529,9 @@ The `@ResponseBody` annotation in Spring Boot allows developers to return data d
 
 ### is @ResponseBody annotation is compulsory to annotate
 
-No, the `@ResponseBody` annotation is not compulsory to annotate controller methods in Spring Boot. When a method returns a value from a controller method without being annotated with `@ResponseBody`, Spring Boot automatically assumes that the return value should be resolved as a view name or a `ModelAndView` object. 
+No, the `@ResponseBody` annotation is not compulsory to annotate controller methods in Spring Boot. When a method returns a value from a controller method without being annotated with `@ResponseBody`, Spring Boot automatically assumes that the return value should be resolved as a view name or a `ModelAndView` object.
 
-However, if you want the return value of the method to be written directly to the HTTP response body without view resolution, then you should use `@ResponseBody`. 
+However, if you want the return value of the method to be written directly to the HTTP response body without view resolution, then you should use `@ResponseBody`.
 
 In summary, whether you use `@ResponseBody` depends on whether you want to return data directly in the response body or if you need the view resolution mechanism provided by Spring MVC.
 
@@ -2568,6 +2575,7 @@ public class MyController {
 ```
 
 In this example:
+
 - The `sayHello` method responds to GET requests at the `/api/hello` endpoint.
 - The `greet` method responds to POST requests at the `/api/greet` endpoint, consuming JSON content and producing plain text responses.
 
@@ -2615,6 +2623,7 @@ public class MyController {
 ```
 
 In this example:
+
 - The `sayHello` method responds to GET requests at the `/api/hello` endpoint.
 - The `greet` method responds to GET requests at the `/api/greet/{name}` endpoint, where `{name}` is a path variable representing the name of the person to greet.
 
@@ -2658,6 +2667,7 @@ public class MyController {
 ```
 
 In this example:
+
 - The `createEntity` method responds to POST requests at the `/api/create` endpoint.
 - It expects an `Entity` object in the request body, which is automatically deserialized using the `@RequestBody` annotation.
 - After processing the request, it returns a response entity with an "Entity created successfully" message.
@@ -2702,6 +2712,7 @@ public class MyController {
 ```
 
 In this example:
+
 - The `updateEntity` method responds to PUT requests at the `/api/update/{id}` endpoint.
 - It expects an `Entity` object in the request body, which is automatically deserialized using the `@RequestBody` annotation.
 - The `id` path variable is extracted from the URI and used to identify the entity to be updated.
@@ -2747,6 +2758,7 @@ public class MyController {
 ```
 
 In this example:
+
 - The `deleteEntity` method responds to DELETE requests at the `/api/delete/{id}` endpoint.
 - It expects an `id` path variable in the URI, which is automatically extracted using the `@PathVariable` annotation.
 - The extracted `id` is used to identify the entity to be deleted.
@@ -2756,7 +2768,7 @@ In this example:
 
 `@DeleteMapping` is a powerful annotation for mapping HTTP DELETE requests to handler methods in Spring MVC controllers. Its specificity and simplicity make it ideal for defining DELETE request mappings in RESTful APIs and web applications. By seamlessly integrating with path variables and supporting content negotiation, `@DeleteMapping` simplifies the handling of DELETE requests and enhances developer productivity.
 
-## `@PatchMapping` 
+## `@PatchMapping`
 
 In Spring MVC, there isn't a specific annotation like `@PatchMapping` dedicated solely to handling HTTP PATCH requests. However, you can still handle PATCH requests using the generic `@RequestMapping` annotation with the appropriate `method` attribute set to `RequestMethod.PATCH`.
 
@@ -2778,6 +2790,7 @@ public class MyController {
 ```
 
 In this example:
+
 - The `@PatchMapping` annotation is used to specifically handle PATCH requests at the `/api/update/{id}` endpoint.
 - The `@PathVariable` annotation is used to extract the `id` from the URI path.
 - The `@RequestBody` annotation is used to deserialize the request body into an `Entity` object.
@@ -2818,13 +2831,13 @@ public class MyController {
     public ResponseEntity<String> getData() {
         // Simulated data retrieval
         String data = "Hello, World!";
-        
+
         // Construct ResponseEntity with custom status and body
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE)
                 .body(data);
     }
-    
+
     @PostMapping("/create")
     public ResponseEntity<String> createData(@RequestBody String newData) {
         // Logic to create new data
@@ -2832,7 +2845,7 @@ public class MyController {
         return ResponseEntity.created(URI.create("/api/data/" + newData))
                 .build();
     }
-    
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception e) {
         // Handling unexpected exceptions
@@ -2843,6 +2856,7 @@ public class MyController {
 ```
 
 In this example:
+
 - The `getData` method returns a response entity with a status of 200 OK, a content type of text/plain, and the body containing the string "Hello, World!".
 - The `createData` method returns a response entity with a status of 201 Created, indicating successful creation of a new resource, along with the URI of the newly created resource.
 - The `handleException` method handles unexpected exceptions by returning a response entity with a status of 500 Internal Server Error and an error message.
@@ -2933,6 +2947,7 @@ Handling path variables and request parameters in Spring MVC allows you to extra
 Path variables are placeholders in the URI path that capture dynamic values. They are specified within curly braces `{}` in the `@RequestMapping` annotation and are extracted using the `@PathVariable` annotation in the controller method parameters.
 
 Example:
+
 ```java
 @GetMapping("/users/{id}")
 public ResponseEntity<User> getUserById(@PathVariable Long id) {
@@ -2945,6 +2960,7 @@ public ResponseEntity<User> getUserById(@PathVariable Long id) {
 Request parameters are key-value pairs passed in the query string of the URL. They are typically used for filtering, sorting, or providing additional data to the server.
 
 Example:
+
 ```java
 @GetMapping("/users")
 public ResponseEntity<List<User>> getUsersByRole(@RequestParam("role") String role) {
@@ -2957,6 +2973,7 @@ public ResponseEntity<List<User>> getUsersByRole(@RequestParam("role") String ro
 You can also use both path variables and request parameters in the same request mapping.
 
 Example:
+
 ```java
 @GetMapping("/users/{id}/posts")
 public ResponseEntity<List<Post>> getUserPosts(
@@ -3145,6 +3162,142 @@ public class UserController {
 
 Using JPA in Spring Boot allows for efficient and easy-to-maintain database interactions, leveraging the power of ORM to manage relational data in an object-oriented way.
 
+## `@Entity`
+
+An **Entity** in Spring Boot is a Java class that represents a table in a relational database. This class is mapped to the table using the Java Persistence API (JPA) annotations, and each instance of the entity class corresponds to a row in the table.
+
+### Key Features
+
+1. **Table Representation**: An entity class represents a table in the database.
+2. **Field Mapping**: Fields in the entity class represent columns in the table.
+3. **Primary Key**: Every entity must have a primary key, typically annotated with `@Id`.
+4. **Annotations**: Uses JPA annotations to define the mappings.
+
+### Common Annotations
+
+- `@Entity`: Specifies that the class is an entity and is mapped to a database table.
+- `@Table`: Specifies the name of the table (optional, defaults to the class name).
+- `@Id`: Specifies the primary key of the entity.
+- `@GeneratedValue`: Specifies how the primary key should be generated.
+- `@Column`: Specifies the details of the column to which a field will be mapped.
+
+### Example
+
+Here's a step-by-step example of defining an entity in a Spring Boot application.
+
+1. **Add Dependencies**: Ensure you have the necessary dependencies in your `pom.xml`.
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+<dependency>
+    <groupId>com.h2database</groupId>
+    <artifactId>h2</artifactId>
+    <scope>runtime</scope>
+</dependency>
+```
+
+2. **Configuration**: Configure the datasource in `application.properties`.
+
+```properties
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.hibernate.ddl-auto=update
+```
+
+3. **Define Entity Class**:
+
+```java
+package com.example.demo.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Column;
+
+@Entity
+@Table(name = "users")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+}
+```
+
+or
+
+```java
+package com.example.demo.entity;
+
+import lombok.Data;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Data
+@Entity
+@Table(name = "users")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private String email;
+}
+
+```
+
+### Summary
+
+- **Entity**: A Java class representing a database table.
+- **Annotations**: Uses JPA annotations to map the class to a table and its fields to columns.
+- **Primary Key**: Each entity must have a primary key annotated with `@Id`.
+- **Configuration**: Includes dependencies and datasource configuration for JPA.
+
+Entities in Spring Boot enable easy and straightforward mapping of Java objects to database tables, allowing for effective interaction with relational databases.
+
 ## JDBC
 
 JDBC (Java Database Connectivity) is a standard API for connecting Java applications to relational databases. In Spring Boot, you can use JDBC for database access by leveraging Spring's JDBC support. Spring Boot simplifies JDBC usage by providing auto-configuration for data sources, JDBC templates, and transaction management.
@@ -3192,6 +3345,7 @@ public class UserRepository {
 ```
 
 In this example:
+
 - `UserRepository` is a Spring-managed bean responsible for data access operations.
 - It uses `JdbcTemplate` to execute SQL queries and update statements.
 - The `findById` method queries the database for a user with the specified ID.
