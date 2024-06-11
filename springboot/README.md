@@ -2060,6 +2060,40 @@ Spring Boot Actuator is included as a dependency in Spring Boot starters, making
 
 Spring Boot Actuator is a valuable tool for monitoring and managing Spring Boot applications in production environments. By providing a comprehensive set of built-in endpoints and metrics, Actuator simplifies the process of monitoring application health, performance, and behavior. Leveraging Actuator enables you to gain insights into your application's runtime characteristics, diagnose issues efficiently, and ensure optimal performance and reliability.
 
+## Embedded Server
+
+In Spring Boot, an embedded server refers to the web server that comes bundled with the application, allowing it to run as a standalone executable JAR or WAR file without needing to deploy to an external server like Tomcat or Jetty. The embedded server simplifies the deployment process and makes it easier to build and distribute self-contained applications.
+
+### Key Features and Components
+
+1. **Supported Servers**: Spring Boot supports several embedded servers out-of-the-box, including Tomcat, Jetty, and Undertow. These servers are included as dependencies in the Spring Boot starters, allowing you to choose the one that best fits your requirements.
+
+2. **Configuration**: Spring Boot provides sensible defaults for configuring the embedded server, making it easy to get started without any additional configuration. However, you can customize the server configuration using application properties or Java configuration classes to tweak settings such as port number, context path, SSL configuration, etc.
+
+3. **Auto-Configuration**: Spring Boot's auto-configuration feature automatically configures the embedded server based on the classpath and the dependencies included in the project. It detects the presence of server-specific libraries and configures the embedded server accordingly, reducing the need for manual configuration.
+
+4. **Embedded Container**: The embedded server is packaged directly within the Spring Boot application's executable JAR or WAR file. When you run the application, the embedded server starts automatically, serving HTTP requests and hosting the application's endpoints and resources.
+
+5. **Lifecycle Management**: Spring Boot manages the lifecycle of the embedded server, starting it when the application starts up and shutting it down gracefully when the application is stopped. This ensures that resources are properly released and connections are closed when the application shuts down.
+
+6. **Integration with Spring MVC**: The embedded server seamlessly integrates with Spring MVC, allowing you to develop web applications using Spring's powerful web framework. You can define controllers, endpoints, filters, and interceptors using familiar Spring MVC annotations and patterns.
+
+### Example Usage
+
+To use an embedded server in a Spring Boot application, you typically create a standard Spring Boot project and include the necessary dependencies. Here's a basic example of a Spring Boot application with an embedded Tomcat server:
+
+1. **Add Dependencies**: Include the `spring-boot-starter-web` dependency in your project's `pom.xml` or `build.gradle` file. This starter includes everything you need to develop web applications with Spring Boot, including the embedded Tomcat server.
+
+2. **Develop Application**: Write your application code using Spring MVC, defining controllers, services, and other components as needed.
+
+3. **Run Application**: Run your Spring Boot application using the `java -jar` command, specifying the path to the executable JAR file. Spring Boot automatically starts the embedded Tomcat server, and your application is accessible at the configured port (usually 8080 by default).
+
+### Conclusion
+
+Embedded servers in Spring Boot provide a convenient and lightweight way to deploy web applications as standalone executables. By bundling the server directly within the application, Spring Boot simplifies the deployment process and eliminates the need for external server setups. Whether you're building RESTful APIs, web applications, or microservices, embedded servers offer flexibility, ease of use, and seamless integration with the Spring ecosystem.
+
+## ApplicationContext
+
 The `ApplicationContext` is a central interface in Spring for providing configuration information to the Spring container and managing the bean lifecycle. It represents the Spring IoC container and is responsible for instantiating, configuring, and managing beans defined in the Spring application context.
 
 ### Features and Responsibilities
@@ -2107,6 +2141,7 @@ public class MyApp {
 ```
 
 In this example:
+
 - We create an `ApplicationContext` using `AnnotationConfigApplicationContext`, passing the configuration class `AppConfig`.
 - The `AppConfig` class is annotated with `@Configuration` and contains bean definitions.
 - We retrieve a bean (`MyService`) from the context and use it in our application.
@@ -2114,3 +2149,4 @@ In this example:
 ### Conclusion
 
 The `ApplicationContext` is a fundamental component of the Spring Framework, responsible for managing beans, handling dependencies, and providing various application services. It serves as the backbone of the Spring IoC container and plays a crucial role in the lifecycle of Spring-managed beans. Understanding the `ApplicationContext` and its features is essential for effective Spring application development.
+

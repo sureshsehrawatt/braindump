@@ -31,7 +31,7 @@
 - [-] Autoconfiguration
 - [ ] Elegant Configuration Management
 - [-] Spring Boot Actuator
-- [ ] Embedded Server
+- [x] Embedded Server
 - [x] ApplicationContext
 - [ ] ORM in Spring Boot
 
@@ -105,4 +105,4 @@
 
 
 git msg = Author | Project Name | Category | Topic name
-example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | ApplicationContext"
+example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | Embedded Server"
