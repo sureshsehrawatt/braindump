@@ -10,8 +10,8 @@
 ## Spring Boot Fundamentals
 
 - [x] Spring Boot Starters
-- [ ] Important Annotations
-  - [ ] (`@SpringBootApplication`
+- [-] Important Annotations
+  - [x] (`@SpringBootApplication`
   - [ ] `@Bean`
   - [ ] `@Component`
   - [ ] `@Service`
@@ -106,4 +106,4 @@
 
 
 git msg = Author | Project Name | Category | Topic name
-example = Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Spring Boot Starters
+example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | @SpringBootApplication"
