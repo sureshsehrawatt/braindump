@@ -4563,3 +4563,596 @@ Authorization in Spring Security Spring Boot involves determining whether authen
    In this example, the `adminDashboard()` method can only be accessed by users with the "ADMIN" role.
 
 By following these steps, you can configure authorization in your Spring Boot application using Spring Security. This allows you to control access to resources and actions within your application based on user roles and permissions.
+
+## `@Scheduled`
+
+Scheduling tasks in Spring Boot using cron jobs can be efficiently done with the `@Scheduled` annotation. This annotation is part of the Spring Framework’s scheduling support and allows you to execute tasks periodically based on cron expressions or fixed delays/intervals.
+
+### Step-by-Step Guide:
+
+#### 1. Add Spring Boot Starter Dependency
+
+First, ensure you have the `spring-boot-starter` dependency included in your `pom.xml`.
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+</dependency>
+```
+
+#### 2. Enable Scheduling
+
+You need to enable scheduling in your Spring Boot application by adding the `@EnableScheduling` annotation to a configuration class.
+
+```java
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+@Configuration
+@EnableScheduling
+public class SchedulingConfig {
+}
+```
+
+#### 3. Create a Scheduled Task
+
+Create a component class where you define your scheduled tasks using the `@Scheduled` annotation.
+
+```java
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ScheduledTasks {
+
+    // A simple example with a fixed rate
+    @Scheduled(fixedRate = 5000)
+    public void performTaskWithFixedRate() {
+        System.out.println("Fixed rate task - " + System.currentTimeMillis() / 1000);
+    }
+
+    // A task with a fixed delay
+    @Scheduled(fixedDelay = 5000)
+    public void performTaskWithFixedDelay() {
+        System.out.println("Fixed delay task - " + System.currentTimeMillis() / 1000);
+    }
+
+    // A task with an initial delay
+    @Scheduled(fixedDelay = 5000, initialDelay = 10000)
+    public void performTaskWithInitialDelay() {
+        System.out.println("Fixed delay task with initial delay - " + System.currentTimeMillis() / 1000);
+    }
+
+    // A task scheduled with a cron expression
+    @Scheduled(cron = "0 0/1 * * * ?")
+    public void performTaskWithCronExpression() {
+        System.out.println("Cron expression task - " + System.currentTimeMillis() / 1000);
+    }
+}
+```
+
+### Cron Expression
+
+A cron expression is a string comprised of six or seven fields separated by white space that represents a schedule:
+
+```
+* * * * * *
+│ │ │ │ │ │
+│ │ │ │ │ └─── Day of the week (0 - 7) (Sunday = 0 or 7)
+│ │ │ │ └────── Month (1 - 12)
+│ │ │ └──────── Day of the month (1 - 31)
+│ │ └────────── Hour (0 - 23)
+│ └──────────── Minute (0 - 59)
+└────────────── Second (0 - 59) [Optional]
+```
+
+### Examples of Cron Expressions:
+
+- `@Scheduled(cron = "0 0 * * * ?")` - Every hour at the top of the hour.
+- `@Scheduled(cron = "0 0 12 * * ?")` - Every day at noon.
+- `@Scheduled(cron = "0 0 12 * * MON-FRI")` - Every weekday at noon.
+- `@Scheduled(cron = "0 0/5 * * * ?")` - Every 5 minutes.
+
+### Using Property Placeholders:
+
+You can also use property placeholders in your cron expressions to make them configurable from application properties.
+
+**application.properties**:
+
+```properties
+scheduling.cron.expression=0 0/1 * * * ?
+```
+
+**Scheduled Task**:
+
+```java
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ScheduledTasks {
+
+    @Value("${scheduling.cron.expression}")
+    private String cronExpression;
+
+    @Scheduled(cron = "${scheduling.cron.expression}")
+    public void performTaskWithCronExpression() {
+        System.out.println("Cron expression task - " + System.currentTimeMillis() / 1000);
+    }
+}
+```
+
+### Summary
+
+1. **Add Dependency**: Include `spring-boot-starter` dependency.
+2. **Enable Scheduling**: Use `@EnableScheduling` in a configuration class.
+3. **Define Scheduled Tasks**: Use `@Scheduled` to define methods that will run according to your schedule.
+4. **Cron Expressions**: Utilize cron expressions for flexible scheduling.
+5. **Property Placeholders**: Use properties files to externalize cron expressions for easy configuration changes.
+
+By following these steps, you can efficiently schedule tasks in a Spring Boot application using cron jobs, providing a robust solution for executing periodic tasks.
+
+## DevTools
+
+DevTools in Spring Boot is a set of development-time features aimed at improving productivity during the development of Spring Boot applications. It provides several convenient features to help streamline the development process. Some of the key features of Spring Boot DevTools include:
+
+1. **Automatic Restart**: DevTools monitors the classpath for changes and automatically restarts the application whenever changes are detected. This eliminates the need to manually stop and restart the application during development.
+
+2. **Live Reload**: DevTools can trigger a browser refresh whenever changes are made to static resources (HTML, CSS, JavaScript) without needing a full-page reload. This feature enhances the development experience by providing instant feedback on changes.
+
+3. **Remote Development**: DevTools allows you to connect to a remote application and provides similar functionalities like automatic restart and live reload. This is particularly useful in scenarios where the development environment is different from the local environment.
+
+4. **Hot Swapping**: DevTools enables hot swapping of classes during development. When changes are made to Java classes, DevTools attempts to reload the classes without restarting the entire application, preserving the application's state.
+
+5. **Property Defaults**: DevTools provides default properties for development, which can be overridden in different environments (e.g., production). This makes it easy to configure the application for development without modifying the production configuration files.
+
+To use Spring Boot DevTools in your application, you typically include the `spring-boot-devtools` dependency in your project's build configuration. For Maven, you can add the following dependency:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-devtools</artifactId>
+    <scope>runtime</scope>
+    <optional>true</optional>
+</dependency>
+```
+
+For Gradle:
+
+```groovy
+dependencies {
+    runtimeOnly("org.springframework.boot:spring-boot-devtools")
+}
+```
+
+Once you have added the dependency, DevTools will be automatically enabled when you run your Spring Boot application in a development environment. You can customize DevTools behavior by configuring properties in your `application.properties` or `application.yml` file.
+
+Overall, Spring Boot DevTools significantly improves the developer experience by reducing development cycle times and providing tools for rapid iteration and testing.
+
+## Sending emails in a Spring Boot
+
+Sending emails in a Spring Boot application using Gmail SMTP and JavaMailSender is a straightforward process. Below is a step-by-step guide on how to set this up.
+
+### Step-by-Step Guide:
+
+#### 1. Add Dependencies
+
+First, add the necessary dependencies to your `pom.xml` file.
+
+```xml
+<dependencies>
+    <!-- Spring Boot Starter Mail -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-mail</artifactId>
+    </dependency>
+</dependencies>
+```
+
+#### 2. Configure Mail Properties
+
+Next, configure the mail properties in your `application.properties` or `application.yml` file.
+
+**application.properties**:
+
+```properties
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=your-email@gmail.com
+spring.mail.password=your-email-password
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.properties.mail.smtp.starttls.required=true
+spring.mail.properties.mail.smtp.ssl.trust=smtp.gmail.com
+spring.mail.properties.mail.smtp.connectiontimeout=5000
+spring.mail.properties.mail.smtp.timeout=3000
+spring.mail.properties.mail.smtp.writetimeout=5000
+```
+
+**Important**:
+
+- Replace `your-email@gmail.com` with your Gmail address.
+- Replace `your-email-password` with your Gmail password. For better security, consider using an App Password instead of your actual Gmail password, especially if you have 2-Step Verification enabled on your Google account.
+
+#### 3. Create a Service to Send Emails
+
+Create a service class to handle email sending logic.
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
+
+@Service
+public class EmailService {
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+    public void sendSimpleEmail(String toEmail, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("your-email@gmail.com");
+        message.setTo(toEmail);
+        message.setSubject(subject);
+        message.setText(body);
+
+        mailSender.send(message);
+    }
+}
+```
+
+#### 4. Create a Controller to Trigger Email Sending
+
+Create a REST controller to trigger the email sending through an endpoint.
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class EmailController {
+
+    @Autowired
+    private EmailService emailService;
+
+    @GetMapping("/sendEmail")
+    public String sendEmail(@RequestParam String toEmail,
+                            @RequestParam String subject,
+                            @RequestParam String body) {
+        emailService.sendSimpleEmail(toEmail, subject, body);
+        return "Email sent successfully!";
+    }
+}
+```
+
+#### 5. Run the Application
+
+Start your Spring Boot application. You can now send an email by making a request to the `/sendEmail` endpoint with the required parameters (`toEmail`, `subject`, `body`).
+
+Example request:
+
+```
+http://localhost:8080/sendEmail?toEmail=recipient@example.com&subject=Test%20Subject&body=This%20is%20the%20email%20body.
+```
+
+### Summary
+
+1. **Dependencies**: Add `spring-boot-starter-mail` dependency.
+2. **Configuration**: Set up mail properties in `application.properties` or `application.yml`.
+3. **Service**: Create an `EmailService` to handle email sending.
+4. **Controller**: Create an `EmailController` to expose an endpoint for sending emails.
+5. **Run & Test**: Start the application and test the email sending functionality by accessing the endpoint.
+
+This setup will enable your Spring Boot application to send emails using Gmail SMTP and JavaMailSender.
+
+## Redis with Spring Boot
+
+Integrating Redis with a Spring Boot application can significantly enhance performance, especially when dealing with caching, session management, and other scenarios that benefit from fast in-memory data storage. Here’s a step-by-step guide to setting up Redis in a Spring Boot application:
+
+### Step-by-Step Guide:
+
+#### 1. Add Dependencies
+
+Add the necessary dependencies to your `pom.xml` file. You need `spring-boot-starter-data-redis`.
+
+```xml
+<dependencies>
+    <!-- Spring Boot Starter Data Redis -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+    <!-- Lettuce is the default Redis client library -->
+    <dependency>
+        <groupId>io.lettuce.core</groupId>
+        <artifactId>lettuce-core</artifactId>
+    </dependency>
+    <!-- Jackson for JSON serialization/deserialization -->
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+    </dependency>
+</dependencies>
+```
+
+#### 2. Configure Redis Properties
+
+Configure your Redis properties in `application.properties` or `application.yml`.
+
+**application.properties**:
+
+```properties
+spring.redis.host=localhost
+spring.redis.port=6379
+spring.redis.password=yourpassword (if Redis is password protected)
+```
+
+#### 3. Create a Redis Configuration Class
+
+Create a configuration class to set up RedisTemplate and other necessary beans.
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+@Configuration
+public class RedisConfig {
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(connectionFactory);
+
+        // Use StringRedisSerializer for keys
+        template.setKeySerializer(new StringRedisSerializer());
+        // Use GenericJackson2JsonRedisSerializer for values
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        return template;
+    }
+}
+```
+
+#### 4. Use RedisTemplate in Your Service
+
+Now, you can use `RedisTemplate` in your service class to interact with Redis.
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
+
+@Service
+public class RedisService {
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    public void save(String key, Object value) {
+        redisTemplate.opsForValue().set(key, value);
+    }
+
+    public Object get(String key) {
+        return redisTemplate.opsForValue().get(key);
+    }
+
+    public void delete(String key) {
+        redisTemplate.delete(key);
+    }
+}
+```
+
+#### 5. Example Controller
+
+Create a controller to demonstrate the usage of `RedisService`.
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/redis")
+public class RedisController {
+
+    @Autowired
+    private RedisService redisService;
+
+    @PostMapping("/save")
+    public void save(@RequestParam String key, @RequestParam String value) {
+        redisService.save(key, value);
+    }
+
+    @GetMapping("/get")
+    public Object get(@RequestParam String key) {
+        return redisService.get(key);
+    }
+
+    @DeleteMapping("/delete")
+    public void delete(@RequestParam String key) {
+        redisService.delete(key);
+    }
+}
+```
+
+### Additional Use Cases
+
+#### 1. Caching with Redis
+
+Spring Boot also supports caching with Redis through annotations. Here’s how you can configure caching with Redis:
+
+**Enable Caching**:
+
+```java
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@EnableCaching
+public class CacheConfig {
+}
+```
+
+**Service Class with Caching**:
+
+```java
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CacheService {
+
+    @Cacheable(value = "dataCache", key = "#key")
+    public String getData(String key) {
+        // Simulate a slow service call
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "Data for " + key;
+    }
+}
+```
+
+**application.properties**:
+
+```properties
+spring.cache.type=redis
+```
+
+### Summary
+
+1. **Dependencies**: Add `spring-boot-starter-data-redis` and optionally `lettuce-core` and `jackson-databind` for JSON serialization.
+2. **Configuration**: Set Redis connection properties and configure `RedisTemplate`.
+3. **Service Implementation**: Use `RedisTemplate` to interact with Redis.
+4. **Controller**: Create a controller to demonstrate the usage of Redis.
+5. **Caching**: Enable caching and use `@Cacheable` for methods that need caching.
+
+By following these steps, you can effectively integrate Redis into your Spring Boot application, enabling powerful caching, session management, and fast data storage capabilities.
+
+## Kafka with Spring Boot
+
+Kafka is an open-source distributed event streaming platform used for building real-time data pipelines and streaming applications. It is designed to handle high volumes of data and provides fault tolerance, scalability, and low-latency processing.
+
+### Key Concepts of Kafka:
+
+1. **Topics**: Kafka organizes data into topics, which are similar to message queues. Producers publish messages to topics, and consumers subscribe to topics to receive messages.
+
+2. **Brokers**: Kafka clusters consist of one or more servers called brokers. Brokers store and manage the topics, partitions, and consumer offsets.
+
+3. **Partitions**: Each topic is divided into one or more partitions, which are distributed across brokers in the Kafka cluster. Partitions allow for parallel processing and scalability.
+
+4. **Producers**: Producers are applications that publish messages to Kafka topics.
+
+5. **Consumers**: Consumers are applications that subscribe to Kafka topics and process messages.
+
+### Using Kafka in Spring Boot Application:
+
+To use Kafka in a Spring Boot application, you can follow these steps:
+
+#### 1. Add Kafka Dependencies
+
+Add the necessary dependencies to your `pom.xml` file:
+
+```xml
+<dependency>
+    <groupId>org.springframework.kafka</groupId>
+    <artifactId>spring-kafka</artifactId>
+</dependency>
+```
+
+#### 2. Configure Kafka Properties
+
+Configure Kafka properties in `application.properties` or `application.yml`:
+
+**application.properties**:
+
+```properties
+spring.kafka.bootstrap-servers=your-kafka-broker-host:9092
+```
+
+Replace `your-kafka-broker-host` with the hostname of your Kafka broker.
+
+#### 3. Define Kafka Producer
+
+Create a Kafka producer class to publish messages to Kafka topics:
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Component;
+
+@Component
+public class KafkaProducer {
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    public void sendMessage(String topic, String message) {
+        kafkaTemplate.send(topic, message);
+    }
+}
+```
+
+#### 4. Define Kafka Consumer
+
+Create a Kafka consumer class to subscribe to Kafka topics and process messages:
+
+```java
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
+
+@Component
+public class KafkaConsumer {
+
+    @KafkaListener(topics = "your-topic-name")
+    public void receiveMessage(String message) {
+        System.out.println("Received message: " + message);
+    }
+}
+```
+
+Replace `your-topic-name` with the name of the Kafka topic you want to subscribe to.
+
+#### 5. Publish and Consume Messages
+
+Use the Kafka producer to publish messages to Kafka topics and let the Kafka consumer receive and process messages.
+
+#### Example Usage:
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class KafkaExampleApplication implements CommandLineRunner {
+
+    @Autowired
+    private KafkaProducer kafkaProducer;
+
+    public static void main(String[] args) {
+        SpringApplication.run(KafkaExampleApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        // Publish a message to Kafka topic
+        kafkaProducer.sendMessage("your-topic-name", "Hello, Kafka!");
+    }
+}
+```
+
+### Summary:
+
+Kafka is a distributed event streaming platform used for building real-time data pipelines and streaming applications. In Spring Boot, you can use the `spring-kafka` library to integrate Kafka into your application. This involves configuring Kafka properties, defining Kafka producers and consumers, and publishing/consuming messages from Kafka topics. With Kafka, you can build scalable, fault-tolerant, and real-time streaming applications.

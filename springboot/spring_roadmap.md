@@ -92,15 +92,14 @@
 
 ## Additional Topics
 
-- [ ] DevTools
-- [ ] Hot Reloading
+- [x] DevTools
 - [x] Lombok(`@Data`, `@Indexed`, `@NonNull`)
 - [ ] Logging and Monitoring
 - [ ] Spring Batch
-- [ ] Scheduling and cron expressions
-- [ ] Email Sending
-- [ ] Redis
-- [ ] Kafka
+- [x] Scheduling and cron expressions
+- [x] Email Sending
+- [x] Redis
+- [x] Kafka
 
 
 git msg = Author | Project Name | Category | Topic name
