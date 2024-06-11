@@ -4228,3 +4228,338 @@ public class DemoApplication {
 - **Automatic Validation**: Throws a `NullPointerException` if a null value is encountered.
 
 Using `@NonNull` in your Spring Boot application helps to prevent null-related errors, making your code more robust and easier to maintain.
+
+# Spring Security
+
+Spring Security is a powerful and highly customizable security framework for Java applications, including those built using Spring Boot. It provides comprehensive security features such as authentication, authorization, session management, and protection against common security threats like cross-site request forgery (CSRF) and cross-site scripting (XSS).
+
+### Key Features of Spring Security
+
+1. **Authentication**: Spring Security allows you to authenticate users using various authentication mechanisms, including form-based authentication, HTTP Basic authentication, and OAuth.
+
+2. **Authorization**: Once authenticated, you can enforce access control policies based on roles, permissions, or custom conditions using Spring Security's authorization mechanisms.
+
+3. **Session Management**: Spring Security provides session management capabilities to manage user sessions securely, including invalidating sessions, preventing session fixation attacks, and tracking active sessions.
+
+4. **Protection against Common Threats**: Spring Security includes features to protect your application against common security threats, such as CSRF protection, XSS protection, and HTTP response header security.
+
+5. **Integration with Spring Boot**: Spring Security seamlessly integrates with Spring Boot, allowing you to configure security settings using simple annotations and properties.
+
+### Basic Concepts
+
+1. **Authentication**: The process of verifying the identity of a user, typically by validating credentials like username and password.
+
+2. **Authorization**: The process of determining whether an authenticated user has the necessary permissions to access a resource or perform an action.
+
+3. **Principal and Authorities**: In Spring Security, a principal represents an authenticated user, and authorities represent the roles or permissions granted to the user.
+
+4. **Security Filters**: Spring Security uses a chain of security filters to intercept incoming requests, authenticate users, enforce access control policies, and perform other security-related tasks.
+
+5. **Security Context**: The security context holds information about the current authenticated user (principal) and their granted authorities. It is accessible throughout the application via a thread-local storage mechanism.
+
+### Example Usage
+
+Here's a simple example of configuring Spring Security in a Spring Boot application:
+
+```java
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+            .inMemoryAuthentication()
+            .withUser("user").password("{noop}password").roles("USER");
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+            .antMatchers("/public/**").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .formLogin();
+    }
+}
+```
+
+In this example:
+
+- The `SecurityConfig` class is annotated with `@EnableWebSecurity` to enable Spring Security.
+- The `configure(AuthenticationManagerBuilder auth)` method configures in-memory authentication with a single user ("user" with password "password" and role "USER").
+- The `configure(HttpSecurity http)` method configures URL-based security rules. Requests to "/public/\*\*" are permitted for all users, while any other request requires authentication via form-based login.
+
+### Conclusion
+
+Spring Security is a powerful and flexible security framework that provides robust authentication and authorization features for Java applications, including those built with Spring Boot. By configuring Spring Security, you can protect your application against unauthorized access, secure sensitive resources, and mitigate common security threats effectively.
+
+## `@EnableWebSecurity`
+
+The `@EnableWebSecurity` annotation in Spring Boot is used to enable web security in a Spring application. It is typically applied to a configuration class and allows you to customize the security configuration by extending `WebSecurityConfigurerAdapter` or implementing `WebSecurityConfigurer`.
+
+### Key Features:
+
+1. **Enables Web Security**: Marks a configuration class to enable Spring Security's web security features.
+
+2. **Custom Security Configuration**: Allows you to customize security settings such as authentication, authorization, and CSRF protection.
+
+3. **Method Security**: Integrates with Spring's method security annotations like `@Secured`, `@PreAuthorize`, and `@PostAuthorize`.
+
+### Example:
+
+```java
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    // Security configuration methods can be overridden here
+}
+```
+
+### Explanation:
+
+- **@Configuration**: Marks the class as a configuration class.
+- **@EnableWebSecurity**: Enables Spring Security's web security features.
+
+- **WebSecurityConfigurerAdapter**: Extends this class to customize security settings by overriding its methods.
+
+### Usage:
+
+You can customize the security configuration by overriding methods from `WebSecurityConfigurerAdapter`, such as `configure(HttpSecurity)` for configuring HTTP security, `configure(AuthenticationManagerBuilder)` for configuring authentication, and `configure(WebSecurity)` for configuring web-based security.
+
+### Summary:
+
+- **@EnableWebSecurity**: Enables Spring Security's web security features in a Spring Boot application.
+- **Customizable Configuration**: Allows customization of security settings by extending `WebSecurityConfigurerAdapter` or implementing `WebSecurityConfigurer`.
+
+- **Method Security**: Integrates with Spring's method security annotations for securing methods based on roles and permissions.
+
+## `WebSecurityConfigurerAdapter`
+
+`WebSecurityConfigurerAdapter` is a class provided by Spring Security that allows you to customize the web security configuration in a Spring application. It serves as a base class for creating a custom security configuration by extending it and overriding its methods.
+
+### Key Features:
+
+1. **Customizable Security Configuration**: Enables customization of web security settings such as authentication, authorization, and CSRF protection.
+
+2. **Method Overrides**: Provides methods to override default security configurations according to specific requirements.
+
+3. **Integration with Spring Boot**: Seamlessly integrates with Spring Boot applications to define security configurations.
+
+### Example:
+
+```java
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    // Security configuration methods can be overridden here
+}
+```
+
+### Explanation:
+
+- **@Configuration**: Marks the class as a configuration class.
+- **@EnableWebSecurity**: Enables Spring Security's web security features.
+
+- **WebSecurityConfigurerAdapter**: Extends this class to customize security settings by overriding its methods.
+
+### Usage:
+
+You can customize the security configuration by overriding methods from `WebSecurityConfigurerAdapter`, such as `configure(HttpSecurity)` for configuring HTTP security, `configure(AuthenticationManagerBuilder)` for configuring authentication, and `configure(WebSecurity)` for configuring web-based security.
+
+### Summary:
+
+- **WebSecurityConfigurerAdapter**: Class used to customize web security configuration in Spring Security.
+- **Customizable Configuration**: Allows customization of security settings by extending `WebSecurityConfigurerAdapter` and overriding its methods.
+
+- **Integration with Spring Boot**: Seamlessly integrates with Spring Boot applications to define security configurations.
+
+## Authentication
+
+Authentication in Spring Security Spring Boot involves verifying the identity of users attempting to access your application's resources. Here's how you can configure authentication in a Spring Boot application using Spring Security:
+
+1. **Add Spring Security Dependency**: Ensure that you have the necessary Spring Security dependencies in your `pom.xml` (for Maven) or `build.gradle` (for Gradle) file.
+
+2. **Configure Authentication Manager**: Extend `WebSecurityConfigurerAdapter` and override the `configure(AuthenticationManagerBuilder auth)` method to specify how users will be authenticated. You can configure authentication using in-memory, JDBC, LDAP, or custom authentication providers.
+
+   ```java
+   import org.springframework.context.annotation.Configuration;
+   import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+   import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+   import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+   @Configuration
+   @EnableWebSecurity
+   public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+       @Override
+       protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+           auth
+               .inMemoryAuthentication()
+                   .withUser("user").password("{noop}password").roles("USER");
+       }
+   }
+   ```
+
+   In this example, we configure an in-memory authentication provider with a single user "user" having the password "password" and the role "USER".
+
+3. **Secure Endpoints**: Use method chaining in the `configure(HttpSecurity http)` method to define security rules for different endpoints. You can specify which URLs require authentication, authorization, or are permitted for all users.
+
+   ```java
+   @Override
+   protected void configure(HttpSecurity http) throws Exception {
+       http
+           .authorizeRequests()
+               .antMatchers("/public/**").permitAll()
+               .anyRequest().authenticated()
+           .and()
+           .formLogin();
+   }
+   ```
+
+   In this example, requests to "/public/\*\*" are permitted for all users, while any other request requires authentication via form-based login.
+
+4. **Customize Authentication**: You can customize authentication further by configuring additional features such as password encoding, remember-me authentication, and session management.
+
+   ```java
+   @Override
+   protected void configure(HttpSecurity http) throws Exception {
+       http
+           .authorizeRequests()
+               .antMatchers("/public/**").permitAll()
+               .anyRequest().authenticated()
+           .and()
+           .formLogin()
+               .loginPage("/login")
+               .permitAll()
+           .and()
+           .rememberMe()
+               .tokenValiditySeconds(3600)
+               .key("my-remember-me-key")
+           .and()
+           .logout()
+               .permitAll();
+   }
+   ```
+
+   In this example, we customize the login page URL, remember-me functionality, and logout handling.
+
+5. **Handle Logout**: Optionally, configure logout handling to allow users to log out securely.
+
+   ```java
+   @Override
+   protected void configure(HttpSecurity http) throws Exception {
+       http
+           .logout()
+               .logoutUrl("/logout")
+               .logoutSuccessUrl("/login?logout")
+               .permitAll();
+   }
+   ```
+
+   This configuration specifies the logout URL and the URL to redirect to after logout.
+
+By following these steps, you can configure authentication in your Spring Boot application using Spring Security. This provides robust security features to protect your application's resources and authenticate users securely.
+
+## Authorization
+
+Authorization in Spring Security Spring Boot involves determining whether authenticated users have permission to access specific resources or perform certain actions within your application. Here's how you can configure authorization in a Spring Boot application using Spring Security:
+
+1. **Add Spring Security Dependency**: Ensure that you have the necessary Spring Security dependencies in your `pom.xml` (for Maven) or `build.gradle` (for Gradle) file.
+
+2. **Secure Endpoints**: Use method chaining in the `configure(HttpSecurity http)` method of your security configuration class to define security rules for different endpoints. You can specify which URLs require authentication, authorization, or are permitted for all users.
+
+   ```java
+   import org.springframework.context.annotation.Configuration;
+   import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+   import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+   import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+   @Configuration
+   @EnableWebSecurity
+   public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+       @Override
+       protected void configure(HttpSecurity http) throws Exception {
+           http
+               .authorizeRequests()
+                   .antMatchers("/admin/**").hasRole("ADMIN")
+                   .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                   .anyRequest().authenticated()
+               .and()
+               .formLogin()
+                   .permitAll()
+               .and()
+               .logout()
+                   .permitAll();
+       }
+   }
+   ```
+
+   In this example:
+   - Requests to "/admin/**" require users to have the "ADMIN" role.
+   - Requests to "/user/**" require users to have either the "USER" or "ADMIN" role.
+   - All other requests require authentication.
+
+3. **Define Roles and Authorities**: Define roles and their corresponding authorities in your authentication provider configuration.
+
+   ```java
+   import org.springframework.context.annotation.Configuration;
+   import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+   import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+   import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+   @Configuration
+   @EnableWebSecurity
+   public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+       @Override
+       protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+           auth
+               .inMemoryAuthentication()
+                   .withUser("user").password("{noop}password").roles("USER")
+                   .and()
+                   .withUser("admin").password("{noop}password").roles("ADMIN");
+       }
+   }
+   ```
+
+   In this example, we define two users: "user" with the role "USER" and "admin" with the role "ADMIN".
+
+4. **Use Annotations for Method-Level Security**: Use `@PreAuthorize`, `@PostAuthorize`, `@Secured`, or `@RolesAllowed` annotations on methods to define fine-grained access control rules.
+
+   ```java
+   import org.springframework.security.access.prepost.PreAuthorize;
+   import org.springframework.stereotype.Controller;
+   import org.springframework.web.bind.annotation.GetMapping;
+
+   @Controller
+   public class MyController {
+
+       @GetMapping("/admin/dashboard")
+       @PreAuthorize("hasRole('ADMIN')")
+       public String adminDashboard() {
+           return "admin-dashboard";
+       }
+   }
+   ```
+
+   In this example, the `adminDashboard()` method can only be accessed by users with the "ADMIN" role.
+
+By following these steps, you can configure authorization in your Spring Boot application using Spring Security. This allows you to control access to resources and actions within your application based on user roles and permissions.

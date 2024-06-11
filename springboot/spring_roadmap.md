@@ -27,7 +27,7 @@
   - [ ] `@Value`
   - [ ] `@PostConstruct`
   - [ ] `@Scheduled`
-  - [ ] `@EnableWebSecurity`)
+  - [x] `@EnableWebSecurity`)
 - [-] Autoconfiguration
 - [ ] Elegant Configuration Management
 - [-] Spring Boot Actuator
@@ -48,14 +48,14 @@
 - [-] MongoTemplate
 - [-] Criteria and Query
 
-## Web Application Development
+## Spring Security
 
-- [ ] Spring Security
-- [ ] (Authentication
-- [ ] Authorization
+- [-] Spring Security
+- [-] (Authentication
+- [-] Authorization
 - [ ] OAuth2
 - [ ] JWT Authentication)
-- [ ] WebSecurityConfigurerAdapter
+- [x] WebSecurityConfigurerAdapter
 
 ## Microservices Architecture
 
@@ -104,4 +104,4 @@
 
 
 git msg = Author | Project Name | Category | Topic name
-example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | Lombok"
+example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | Spring Security"
