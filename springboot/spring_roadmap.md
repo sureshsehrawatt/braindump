@@ -94,7 +94,7 @@
 
 - [ ] DevTools
 - [ ] Hot Reloading
-- [ ] Lombok(`@Data`, `@Indexed`, `@NonNull`)
+- [x] Lombok(`@Data`, `@Indexed`, `@NonNull`)
 - [ ] Logging and Monitoring
 - [ ] Spring Batch
 - [ ] Scheduling and cron expressions
@@ -104,4 +104,4 @@
 
 
 git msg = Author | Project Name | Category | Topic name
-example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | JPA, JDBC, MongoDB, MongoTemplate, Criteria and Query"
+example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | Lombok"

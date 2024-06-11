@@ -4015,3 +4015,216 @@ public class UserService {
 - **Query**: Builds the query to be executed by `MongoTemplate`, incorporating criteria to specify conditions.
 
 Using `MongoTemplate`, `Criteria`, and `Query`, you can perform powerful and flexible operations on MongoDB collections within your Spring Boot application.
+
+# Lombok
+
+**Lombok** is a Java library that helps reduce boilerplate code by generating common methods (like getters, setters, toString, etc.) at compile time using annotations. This makes your code cleaner and more maintainable.
+
+### Key Features of Lombok
+
+1. **Automatic Generation**: Generates commonly used methods such as getters, setters, equals, hashCode, and toString.
+2. **Annotations**: Uses annotations to indicate which methods to generate.
+3. **Integration**: Easily integrates with Spring Boot and other Java frameworks.
+
+### `@Data`
+
+The `@Data` annotation is one of the most commonly used Lombok annotations. It is a shortcut for several other annotations combined:
+
+- `@Getter`: Generates getters for all fields.
+- `@Setter`: Generates setters for all fields.
+- `@ToString`: Generates a `toString` method.
+- `@EqualsAndHashCode`: Generates `equals` and `hashCode` methods.
+- `@RequiredArgsConstructor`: Generates a constructor for all final fields and fields marked with `@NonNull`.
+
+### Usage
+
+#### Adding Lombok Dependency
+
+To use Lombok in a Spring Boot project, add the following dependency to your `pom.xml` (for Maven) or `build.gradle` (for Gradle).
+
+##### Maven
+
+```xml
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.24</version>
+    <scope>provided</scope>
+</dependency>
+```
+
+#### Example Entity Class with Lombok
+
+Without Lombok, a typical Java entity might look like this:
+
+```java
+package com.example.demo.entity;
+
+import java.util.Objects;
+
+public class User {
+    private Long id;
+    private String name;
+    private String email;
+
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+               Objects.equals(name, user.name) &&
+               Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email);
+    }
+}
+```
+
+With Lombok, the same class can be simplified significantly:
+
+```java
+package com.example.demo.entity;
+
+import lombok.Data;
+
+@Data
+public class User {
+    private Long id;
+    private String name;
+    private String email;
+}
+```
+
+Lombok's `@Data` annotation automatically generates all the boilerplate code (getters, setters, toString, equals, and hashCode methods).
+
+### Summary
+
+- **Lombok**: A library to reduce boilerplate code by generating common methods.
+- **@Data**: A Lombok annotation that combines `@Getter`, `@Setter`, `@ToString`, `@EqualsAndHashCode`, and `@RequiredArgsConstructor`.
+- **Integration**: Add Lombok as a dependency in your project and use annotations to simplify your code.
+
+Using Lombok, particularly the `@Data` annotation, helps keep your Spring Boot applications clean and concise, focusing on business logic rather than repetitive boilerplate code.
+
+## `@NonNull`
+
+The `@NonNull` annotation in Spring Boot, provided by Lombok, is used to indicate that a field, parameter, or method return value cannot be null. This helps enforce null-safety in your code.
+
+### Key Features
+
+1. **Null-Safety**: Prevents null values for the annotated element.
+2. **Validation**: Automatically checks for null values and throws a `NullPointerException` if a null value is assigned or passed.
+3. **Readability**: Makes code more readable and self-documenting by clearly indicating non-null constraints.
+
+### Example
+
+Here's an example of using `@NonNull` in a Spring Boot application.
+
+1. **Add Dependencies**: Ensure Lombok is included in your `pom.xml`.
+
+#### Maven
+
+```xml
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.24</version>
+    <scope>provided</scope>
+</dependency>
+```
+
+#### Gradle
+
+```gradle
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+}
+```
+
+2. **Document Class Using @NonNull**:
+
+```java
+package com.example.demo.entity;
+
+import lombok.Data;
+import lombok.NonNull;
+
+@Data
+public class User {
+
+    @NonNull
+    private String name;
+
+    @NonNull
+    private String email;
+}
+```
+
+### Explanation
+
+- **@NonNull**: Applied to fields `name` and `email` to ensure they cannot be null.
+- **@Data**: Lombok annotation that generates getters, setters, `toString()`, `equals()`, and `hashCode()` methods.
+
+### Usage
+
+When creating a new instance of the `User` class, Lombok will ensure the fields `name` and `email` are not null.
+
+```java
+package com.example.demo;
+
+import com.example.demo.entity.User;
+
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        // This will throw a NullPointerException because the email is null
+        User user = new User("John", null);
+    }
+}
+```
+
+### Summary
+
+- **@NonNull**: Ensures fields, parameters, or return values are not null, providing null-safety.
+- **Lombok Integration**: Works seamlessly with other Lombok annotations like `@Data` to reduce boilerplate code.
+- **Automatic Validation**: Throws a `NullPointerException` if a null value is encountered.
+
+Using `@NonNull` in your Spring Boot application helps to prevent null-related errors, making your code more robust and easier to maintain.
