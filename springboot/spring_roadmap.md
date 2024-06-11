@@ -16,9 +16,8 @@
   - [x] `@Component`
   - [x] `@Service`
   - [x] `@Component vs @Service`
-  - [ ] `@Autowired`
-  - [ ] `@RestController`
-  - [ ] `@Configuration`
+  - [x] `@Autowired`
+  - [x] `@Configuration`
   - [ ] `@Transactional`
   - [ ] `@EnableTransactionManagement`
   - [ ] `@MongoTransactionManager`
@@ -40,7 +39,7 @@
 
 - [ ] REST APIs
 - [ ] (GET, POST, PUT, DELETE)
-- [ ] (`@RequestBody`, `@PathVariable`, `@Mappings`)
+- [ ] (`@RestController`, `@RequestBody`, `@PathVariable`, `@Mappings`)
 - [ ] ResponseEntity
 - [ ] Handling Path Variables and Request Parameters
 - [ ] Repository/DAO Layer
@@ -106,4 +105,4 @@
 
 
 git msg = Author | Project Name | Category | Topic name
-example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | @Component and @Service"
+example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | @Autowired and @Configuration"

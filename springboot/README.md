@@ -1533,3 +1533,299 @@ public class MyController {
   - **Example**: Service classes handling business operations.
 
 In practice, using `@Service` for service-layer classes and `@Component` for general-purpose beans helps in organizing the application structure and making the codebase more maintainable and understandable.
+
+## `@Autowired`
+
+The `@Autowired` annotation in Spring Boot is used for automatic dependency injection. It allows Spring to resolve and inject collaborating beans into your bean.
+
+### Key Features
+
+1. **Dependency Injection**: Automatically injects required dependencies.
+2. **Reduced Boilerplate**: Eliminates the need for manual bean wiring.
+3. **Flexibility**: Can be used on constructors, fields, and setter methods.
+4. **Optional Dependency**: Can handle optional dependencies using `required = false`.
+
+### Example
+
+Here’s how to use `@Autowired` in a Spring Boot application.
+
+1. **Add Dependencies**: Ensure you have the Spring Boot Starter dependency in your `pom.xml`.
+
+#### Maven
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+```
+
+2. **Create a Service Class**:
+
+```java
+package com.example.demo.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+    public String getUser() {
+        return "John Doe";
+    }
+}
+```
+
+3. **Create a Controller and Use @Autowired**:
+
+```java
+package com.example.demo.controller;
+
+import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/user")
+    public String getUser() {
+        return userService.getUser();
+    }
+}
+```
+
+### Explanation
+
+- **@Service**: Marks `UserService` as a Spring service component.
+- **@RestController**: Marks `UserController` as a Spring MVC controller.
+- **@Autowired**: Injects the `UserService` bean into the `UserController`.
+
+### Usage
+
+When the application is run, Spring will automatically inject an instance of `UserService` into the `UserController`. Accessing the `/user` endpoint will return the string "John Doe".
+
+### Constructor Injection
+
+For better testability and immutability, constructor injection is often preferred over field injection.
+
+```java
+@RestController
+public class UserController {
+
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/user")
+    public String getUser() {
+        return userService.getUser();
+    }
+}
+```
+
+### Optional Dependency
+
+If you have an optional dependency, you can set `required = false`.
+
+```java
+@Autowired(required = false)
+private UserService userService;
+```
+
+### Summary
+
+- **@Autowired**: Automatically injects dependencies.
+- **Flexibility**: Can be used on fields, constructors, or setters.
+- **Reduced Boilerplate**: Simplifies dependency management in Spring applications.
+
+Using `@Autowired` in Spring Boot streamlines dependency injection, making it easier to manage and test your components.
+
+## `@Configuration`
+The `@Configuration` annotation in Spring is an important part of the framework's configuration mechanism. It is used to define a configuration class that provides bean definitions to the Spring container. This approach is part of Spring's Java-based configuration model, which offers a type-safe alternative to traditional XML-based configuration. Here’s a deep dive into the `@Configuration` annotation, its usage, features, and benefits.
+
+### Purpose and Role of `@Configuration`
+
+- **Define Beans**: The primary purpose of a `@Configuration` class is to define beans using methods annotated with `@Bean`.
+- **Source of Configuration**: It acts as a source of bean definitions and configurations for the Spring IoC container.
+- **Java-based Configuration**: Provides a type-safe and more maintainable alternative to XML configuration.
+
+### Basic Usage
+
+#### Example Configuration Class
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public MyService myService() {
+        return new MyServiceImpl();
+    }
+}
+```
+
+In this example:
+- The `AppConfig` class is annotated with `@Configuration`, indicating that it is a source of bean definitions.
+- The `myService` method is annotated with `@Bean`, meaning it returns a bean that will be managed by the Spring container.
+
+### Features and Characteristics
+
+#### Singleton Scope
+
+By default, beans defined in a `@Configuration` class are singletons. This means that the same instance of the bean will be returned each time it is requested from the container.
+
+#### Proxy and CGLIB Enhancements
+
+When a class is annotated with `@Configuration`, Spring enhances it using CGLIB to create a subclass that manages the lifecycle of the beans. This proxy ensures that bean methods are called only once per context and handle dependency injection properly.
+
+### Advanced Configuration
+
+#### Defining Dependencies
+
+Beans can be defined with dependencies on other beans, and the Spring container will manage the creation and injection of these dependencies.
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public MyRepository myRepository() {
+        return new MyRepositoryImpl();
+    }
+
+    @Bean
+    public MyService myService(MyRepository myRepository) {
+        return new MyServiceImpl(myRepository);
+    }
+}
+```
+
+In this example:
+- The `myService` bean depends on the `myRepository` bean.
+- Spring ensures that `myRepository` is created and injected into `myService`.
+
+#### Conditional Configuration
+
+Spring provides conditional annotations to control the creation of beans based on certain conditions.
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.core.env.Environment;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    @Conditional(MyCondition.class)
+    public MyService myService() {
+        return new MyServiceImpl();
+    }
+}
+```
+
+In this example:
+- The `myService` bean will only be created if `MyCondition` is met.
+
+### Profiles
+
+Configuration classes can be associated with specific profiles, allowing different beans to be created based on the active profile.
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    @Profile("dev")
+    public MyService devService() {
+        return new DevServiceImpl();
+    }
+
+    @Bean
+    @Profile("prod")
+    public MyService prodService() {
+        return new ProdServiceImpl();
+    }
+}
+```
+
+In this example:
+- The `devService` bean is created when the `dev` profile is active.
+- The `prodService` bean is created when the `prod` profile is active.
+
+### Combining with Other Annotations
+
+`@Configuration` can be combined with other Spring annotations to create a comprehensive configuration.
+
+#### Importing Other Configurations
+
+```java
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+@Configuration
+@Import({OtherConfig.class})
+public class AppConfig {
+    // Bean definitions
+}
+```
+
+In this example:
+- The `AppConfig` class imports bean definitions from `OtherConfig`.
+
+#### Property Sources
+
+```java
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+
+@Configuration
+@PropertySource("classpath:application.properties")
+public class AppConfig {
+    // Bean definitions
+}
+```
+
+In this example:
+- The `AppConfig` class loads properties from the `application.properties` file.
+
+### Benefits of `@Configuration`
+
+- **Type-Safety**: Java-based configuration is type-safe, providing compile-time checking of bean definitions and dependencies.
+- **Refactoring**: Easier to refactor and maintain compared to XML configuration.
+- **IDE Support**: Better support from IDEs for code completion, navigation, and refactoring.
+- **Conditional Configuration**: Provides powerful mechanisms for conditional bean creation and profile-based configurations.
+- **Centralized Configuration**: Allows for centralized management of bean definitions and application settings.
+
+### Summary
+
+- **`@Configuration`**: Marks a class as a source of Spring bean definitions.
+- **`@Bean` Methods**: Methods within `@Configuration` classes annotated with `@Bean` define the beans.
+- **Singleton Scope**: Beans are singletons by default, managed by a CGLIB proxy.
+- **Advanced Features**: Supports dependency injection, conditional configuration, profiles, and property sources.
+- **Benefits**: Type-safety, maintainability, IDE support, and centralized configuration.
+
+By leveraging `@Configuration`, you can create robust, maintainable, and flexible Spring applications with Java-based configuration, ensuring better control over your application's components and their lifecycle.
+
