@@ -10,7 +10,6 @@ Spring Boot is a framework for building production-ready applications in Java wi
 - [Spring IoC](#spring-ioc)
 - [Spring AOP](#spring-aop)
 - [Spring Beans, Bean Life Cycle, and Bean Scope](#spring-beans)
-- [Spring Configuration Styles (XML, Java-based, Annotation-based)](#spring-configuration-styles)
 
 ## Spring Boot Fundamentals
 
@@ -808,3 +807,49 @@ public class MyController {
 ### Conclusion
 
 Understanding Spring Beans, their lifecycle, and the different scopes they can have is fundamental to developing robust Spring applications. This deep dive covered the basics of Spring Beans, the lifecycle they go through, and the various scopes available to manage their lifecycle and visibility within the application context. By leveraging these features, you can create more modular, reusable, and maintainable code.
+
+## Spring Boot Starter
+
+**Overview:**
+- Spring Boot Starter simplifies and accelerates Spring application development by providing pre-configured dependencies and auto-configuration.
+
+**Key Features:**
+- Pre-packaged Dependencies: Includes curated dependencies tailored for specific use cases or technologies.
+- Auto-Configuration: Spring Boot configures dependencies based on defaults and conventions, reducing manual configuration.
+- Ready-to-Use Templates: Starters often include template code to kickstart project development.
+- Technology-Centric: Offers starters for various technologies, allowing developers to pick the one that suits their project needs.
+- Easy Customization: While providing a quick start, Spring Boot allows extensive customization to adapt to specific requirements.
+- Enables developers to focus on application logic rather than configuration details.
+
+**Why Spring Boot Starter Projects?**
+- Without starters, developers would need to manually select and configure dependencies, leading to increased complexity and configuration overhead.
+
+**Example Scenario:**
+- Consider developing a web application using Spring MVC without starters:
+  - Requires selecting compatible versions of frameworks such as Spring MVC, Jackson Databind, Hibernate Validator, and Log4j.
+  - Involves configuring settings for dispatcher servlet, view resolver, error pages, web jars, etc.
+  - Similar setup needed for JPA, including providing jars and configuring datasource, entity manager, transaction manager, etc.
+
+**Spring Boot Starter Web:**
+- Offers essential features for developing web applications or RESTful services.
+- Simplifies project setup by providing compatible dependencies and auto-configuration.
+- Example of usage: Spring Initializr to create a project with Spring Boot Starter Web.
+
+**Dependencies:**
+- Includes core Spring dependencies, Spring MVC, Jackson for JSON binding, Hibernate Validator for validation, Tomcat as the embedded servlet container, and logging frameworks.
+
+**Auto-Configuration:**
+- Automatically configures key components like dispatcher servlet, error pages, and web jars.
+- Eliminates the need for manual configuration, enabling quick project setup and development.
+
+**Other Starter Project Options:**
+- Various starter projects cater to different use cases:
+  - spring-boot-starter-web-services
+  - spring-boot-starter-test
+  - spring-boot-starter-jdbc
+  - spring-boot-starter-hateoas
+  - spring-boot-starter-security
+  - spring-boot-starter-data-jpa
+  - spring-boot-starter-cache
+  - spring-boot-starter-data-rest
+- Additional starters cover technical aspects like monitoring, servlet containers, and logging.

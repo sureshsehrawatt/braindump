@@ -6,11 +6,10 @@
 - [x] Spring IOC
 - [x] Spring AOP
 - [x] Spring Beans, Bean Life Cycle, and Bean Scope
-- [ ] Spring Configuration Styles (XML, Java-based, Annotation-based)
 
 ## Spring Boot Fundamentals
 
-- [ ] Spring Boot Starters
+- [x] Spring Boot Starters
 - [ ] Important Annotations
   - [ ] (`@SpringBootApplication`
   - [ ] `@Bean`
@@ -104,3 +103,7 @@
 - [ ] Email Sending
 - [ ] Redis
 - [ ] Kafka
+
+
+git msg = Author | Project Name | Category | Topic name
+example = Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Spring Boot Starters

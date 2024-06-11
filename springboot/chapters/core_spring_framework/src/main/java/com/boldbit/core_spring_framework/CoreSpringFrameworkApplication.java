@@ -14,21 +14,20 @@ public class CoreSpringFrameworkApplication {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(CoreSpringFrameworkApplication.class, args);
 
-
 		// ---------------------- Dependency Injection Section ------------------------
 		SingletonScopedCounter singletonScopedCounter1 = context.getBean(SingletonScopedCounter.class);
 		SingletonScopedCounter singletonScopedCounter2 = context.getBean(SingletonScopedCounter.class);
 		SingletonScopedCounter singletonScopedCounter3 = context.getBean(SingletonScopedCounter.class);
 		System.out.println("Singleton objects count: " + singletonScopedCounter1.instanceCount);
-		
+
 		PrototypeScopedCounter prototypeScopedCounter1 = context.getBean(PrototypeScopedCounter.class);
 		PrototypeScopedCounter prototypeScopedCounter2 = context.getBean(PrototypeScopedCounter.class);
 		PrototypeScopedCounter prototypeScopedCounter3 = context.getBean(PrototypeScopedCounter.class);
 		System.out.println("Prototype objects count: " + prototypeScopedCounter1.instanceCount);
-		
+
 		// ---------------------- AOP Section ------------------------
 		MyService myService = context.getBean(MyService.class);
 		System.out.println();
-        myService.performTask();
+		myService.performTask();
 	}
 }
