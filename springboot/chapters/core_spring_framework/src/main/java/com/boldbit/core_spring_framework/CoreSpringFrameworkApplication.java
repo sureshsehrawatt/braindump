@@ -30,8 +30,5 @@ public class CoreSpringFrameworkApplication {
 		MyService myService = context.getBean(MyService.class);
 		System.out.println();
         myService.performTask();
-
-
-		
 	}
 }

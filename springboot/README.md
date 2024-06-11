@@ -5,15 +5,15 @@ Spring Boot is a framework for building production-ready applications in Java wi
 # Table of Contents
 
 ## Core Spring Framework
+
 - [Dependency Injection](#dependency-injection)
 - [Spring IoC](#spring-ioc)
 - [Spring AOP](#spring-aop)
-- [Spring Beans](#spring-beans)
-- [Spring Bean Life Cycle](#spring-bean-life-cycle)
-- [Spring Bean Scope](#spring-bean-scope)
+- [Spring Beans, Bean Life Cycle, and Bean Scope](#spring-beans)
 - [Spring Configuration Styles (XML, Java-based, Annotation-based)](#spring-configuration-styles)
 
 ## Spring Boot Fundamentals
+
 - [Spring Boot Starters](#spring-boot-starters)
 - [Important Annotations](#important-annotations)
   - [`@SpringBootApplication`](#springbootapplication)
@@ -42,6 +42,7 @@ Spring Boot is a framework for building production-ready applications in Java wi
 - [ORM in Spring Boot](#orm-in-spring-boot)
 
 ## RESTful Services Development
+
 - [REST APIs](#rest-apis)
   - [GET, POST, PUT, DELETE](#get-post-put-delete)
   - [`@RequestBody`, `@PathVariable`, `@Mappings`](#requestbody-pathvariable-mappings)
@@ -55,6 +56,7 @@ Spring Boot is a framework for building production-ready applications in Java wi
 - [Criteria and Query](#criteria-and-query)
 
 ## Web Application Development
+
 - [Spring Security](#spring-security)
   - [Authentication](#authentication)
   - [Authorization](#authorization)
@@ -63,6 +65,7 @@ Spring Boot is a framework for building production-ready applications in Java wi
 - [WebSecurityConfigurerAdapter](#websecurityconfigureradapter)
 
 ## Microservices Architecture
+
 - [Microservices](#microservices)
 - [Microservices Design Patterns](#microservices-design-patterns)
 - [Spring Cloud Modules](#spring-cloud-modules)
@@ -80,6 +83,7 @@ Spring Boot is a framework for building production-ready applications in Java wi
 - [RestTemplate](#resttemplate)
 
 ## Testing and DevOps
+
 - [Testing Spring Boot Application](#testing-spring-boot-application) (`MOCKMVC`, `@SpringBootTest`, `@Test`, `@BeforeEach`, `@AfterEach`, `@BeforeAll`, `@AfterAll`, `@BeforeTestClass`, `@AfterTestClass`, `@BeforeTestMethod`, `@AfterTestMethod`, `@BeforeSuite`, `@AfterSuite`, `@ParameterizedTest`, `@Disabled`, `@Mock`, `@InjectMocks`)
 - [DevOps (Profiles)](#devops-profiles)
 - [Exception Handling](#exception-handling) (Using `@ControllerAdvice` and `@ExceptionHandler`)
@@ -87,12 +91,14 @@ Spring Boot is a framework for building production-ready applications in Java wi
   - [Global Exception Handling](#global-exception-handling)
 
 ## Hibernate, Persistence and Database Access
+
 - [Transactions](#transactions)
 - [Relationships](#relationships)
 - [Entity Lifecycle](#entity-lifecycle)
 - [PlatformTransactionManager](#platformtransactionmanager)
 
 ## Additional Topics
+
 - [DevTools](#devtools)
 - [Hot Reloading](#hot-reloading)
 - [Lombok](#lombok) (`@Data`, `@Indexed`, `@NonNull`)
@@ -104,7 +110,8 @@ Spring Boot is a framework for building production-ready applications in Java wi
 - [Kafka](#kafka)
 
 ## Dependency Injection
-Dependency Injection (DI) is a design pattern and a fundamental concept in software engineering, particularly in object-oriented programming (OOP) and inversion of control (IoC) frameworks like Spring. 
+
+Dependency Injection (DI) is a design pattern and a fundamental concept in software engineering, particularly in object-oriented programming (OOP) and inversion of control (IoC) frameworks like Spring.
 
 ### Key Concepts:
 
@@ -117,34 +124,36 @@ Dependency Injection (DI) is a design pattern and a fundamental concept in softw
 ### Types of Dependency Injection:
 
 1. **Constructor Injection**: Dependencies are provided to the client through the constructor. This ensures that all required dependencies are available when the object is created.
-    ```java
-    public class Car {
-        private final Engine engine;
 
-        public Car(Engine engine) {
-            this.engine = engine;
-        }
-    }
-    ```
+   ```java
+   public class Car {
+       private final Engine engine;
+
+       public Car(Engine engine) {
+           this.engine = engine;
+       }
+   }
+   ```
 
 2. **Setter Injection**: Dependencies are set through setter methods. This allows for optional dependencies and can make the code more readable.
-    ```java
-    public class Car {
-        private Engine engine;
 
-        public void setEngine(Engine engine) {
-            this.engine = engine;
-        }
-    }
-    ```
+   ```java
+   public class Car {
+       private Engine engine;
+
+       public void setEngine(Engine engine) {
+           this.engine = engine;
+       }
+   }
+   ```
 
 3. **Field Injection**: Dependencies are directly injected into fields of the class. While convenient, this approach can make testing more difficult and is generally discouraged due to its potential for hidden dependencies.
-    ```java
-    public class Car {
-        @Autowired
-        private Engine engine;
-    }
-    ```
+   ```java
+   public class Car {
+       @Autowired
+       private Engine engine;
+   }
+   ```
 
 ### Benefits of Dependency Injection:
 
@@ -175,60 +184,63 @@ In this example, the `Car` class depends on the `Engine` class. The `Engine` obj
 ### Configuring Dependency Injection:
 
 1. **Using Annotations**:
-    - **@Component**: Indicates that a class is a Spring-managed bean. It is a generic stereotype for any Spring-managed component.
-    - **@Service**: Specialization of `@Component`. It is used to annotate service-layer classes.
-    - **@Repository**: Specialization of `@Component`. It is used to annotate DAO or repository classes.
-    - **@Controller**: Specialization of `@Component`. It is used to annotate controller classes in Spring MVC.
-    - **@Autowired**: Used to automatically wire beans by type.
 
-    ```java
-    @Component
-    public class Engine { }
+   - **@Component**: Indicates that a class is a Spring-managed bean. It is a generic stereotype for any Spring-managed component.
+   - **@Service**: Specialization of `@Component`. It is used to annotate service-layer classes.
+   - **@Repository**: Specialization of `@Component`. It is used to annotate DAO or repository classes.
+   - **@Controller**: Specialization of `@Component`. It is used to annotate controller classes in Spring MVC.
+   - **@Autowired**: Used to automatically wire beans by type.
 
-    @Service
-    public class CarService {
-        private final Engine engine;
+   ```java
+   @Component
+   public class Engine { }
 
-        @Autowired
-        public CarService(Engine engine) {
-            this.engine = engine;
-        }
-    }
-    ```
+   @Service
+   public class CarService {
+       private final Engine engine;
+
+       @Autowired
+       public CarService(Engine engine) {
+           this.engine = engine;
+       }
+   }
+   ```
 
 2. **Using Java Configuration**:
-    - **@Configuration**: Indicates that a class declares one or more `@Bean` methods and may be processed by the Spring container to generate bean definitions.
-    - **@Bean**: Indicates that a method produces a bean to be managed by the Spring container.
 
-    ```java
-    @Configuration
-    public class AppConfig {
-        @Bean
-        public Engine engine() {
-            return new Engine();
-        }
+   - **@Configuration**: Indicates that a class declares one or more `@Bean` methods and may be processed by the Spring container to generate bean definitions.
+   - **@Bean**: Indicates that a method produces a bean to be managed by the Spring container.
 
-        @Bean
-        public CarService carService() {
-            return new CarService(engine());
-        }
-    }
-    ```
+   ```java
+   @Configuration
+   public class AppConfig {
+       @Bean
+       public Engine engine() {
+           return new Engine();
+       }
+
+       @Bean
+       public CarService carService() {
+           return new CarService(engine());
+       }
+   }
+   ```
 
 3. **Using XML Configuration**:
-    - Although less common in modern Spring applications, XML configuration is still supported.
 
-    ```xml
-    <beans xmlns="http://www.springframework.org/schema/beans"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://www.springframework.org/schema/beans
-                               http://www.springframework.org/schema/beans/spring-beans.xsd">
-        <bean id="engine" class="com.example.Engine"/>
-        <bean id="carService" class="com.example.CarService">
-            <constructor-arg ref="engine"/>
-        </bean>
-    </beans>
-    ```
+   - Although less common in modern Spring applications, XML configuration is still supported.
+
+   ```xml
+   <beans xmlns="http://www.springframework.org/schema/beans"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.springframework.org/schema/beans
+                              http://www.springframework.org/schema/beans/spring-beans.xsd">
+       <bean id="engine" class="com.example.Engine"/>
+       <bean id="carService" class="com.example.CarService">
+           <constructor-arg ref="engine"/>
+       </bean>
+   </beans>
+   ```
 
 ### Best Practices:
 
@@ -241,59 +253,62 @@ In this example, the `Car` class depends on the `Engine` class. The `Engine` obj
 ### Advanced Topics:
 
 1. **Qualifiers**:
-    - When multiple beans of the same type exist, you can use `@Qualifier` to specify which bean to inject.
 
-    ```java
-    @Component
-    @Qualifier("v8Engine")
-    public class V8Engine extends Engine { }
+   - When multiple beans of the same type exist, you can use `@Qualifier` to specify which bean to inject.
 
-    @Component
-    @Qualifier("v6Engine")
-    public class V6Engine extends Engine { }
+   ```java
+   @Component
+   @Qualifier("v8Engine")
+   public class V8Engine extends Engine { }
 
-    @Service
-    public class CarService {
-        private final Engine engine;
+   @Component
+   @Qualifier("v6Engine")
+   public class V6Engine extends Engine { }
 
-        @Autowired
-        public CarService(@Qualifier("v8Engine") Engine engine) {
-            this.engine = engine;
-        }
-    }
-    ```
+   @Service
+   public class CarService {
+       private final Engine engine;
+
+       @Autowired
+       public CarService(@Qualifier("v8Engine") Engine engine) {
+           this.engine = engine;
+       }
+   }
+   ```
 
 2. **Profiles**:
-    - Use `@Profile` to define beans for different environments (e.g., development, production).
 
-    ```java
-    @Configuration
-    @Profile("dev")
-    public class DevConfig {
-        @Bean
-        public Engine engine() {
-            return new V6Engine();
-        }
-    }
+   - Use `@Profile` to define beans for different environments (e.g., development, production).
 
-    @Configuration
-    @Profile("prod")
-    public class ProdConfig {
-        @Bean
-        public Engine engine() {
-            return new V8Engine();
-        }
-    }
-    ```
+   ```java
+   @Configuration
+   @Profile("dev")
+   public class DevConfig {
+       @Bean
+       public Engine engine() {
+           return new V6Engine();
+       }
+   }
+
+   @Configuration
+   @Profile("prod")
+   public class ProdConfig {
+       @Bean
+       public Engine engine() {
+           return new V8Engine();
+       }
+   }
+   ```
 
 3. **Scopes**:
-    - Use `@Scope` to define the scope of a bean (singleton, prototype, request, session, etc.).
 
-    ```java
-    @Component
-    @Scope("prototype")
-    public class PrototypeBean { }
-    ```
+   - Use `@Scope` to define the scope of a bean (singleton, prototype, request, session, etc.).
+
+   ```java
+   @Component
+   @Scope("prototype")
+   public class PrototypeBean { }
+   ```
 
 ### Summary:
 
@@ -595,3 +610,201 @@ This output shows that the `performTask` method was executed, and the aspect log
 ### Conclusion
 
 Spring AOP is a powerful tool for implementing cross-cutting concerns in a clean, modular way. By using aspects, you can keep your business logic clean and separate from concerns like logging, transaction management, and security. This results in more maintainable and testable code. Understanding the core concepts of Spring AOP and how to use different types of advice can greatly enhance your ability to write clean, modular, and efficient Spring applications.
+
+## Spring Beans, Bean Life Cycle, and Bean Scope
+
+### Java Beans
+
+Java Beans are classes that encapsulate multiple objects into a single object (the bean). They are designed to create reusable software components for Java.
+
+### Spring Beans
+
+**Spring Beans** are objects that are managed by the Spring IoC (Inversion of Control) container. They form the backbone of a Spring application. A bean is an object that is instantiated, assembled, and managed by a Spring IoC container.
+
+- **Bean Definition**: Configuration metadata that tells the Spring container how to instantiate, configure, and assemble the beans in your application. This metadata can be provided via XML configuration, Java annotations, or Java configuration classes.
+- **IoC Container**: The Spring container is responsible for managing the lifecycle and configuration of application objects. The container gets its instructions on what objects to instantiate, configure, and assemble by reading configuration metadata.
+
+### Analogy
+
+- **Farmer**: Spring Framework
+- **Farmland**: Spring Container
+- **Seeds/Beans**: Spring Beans
+- **Cultivating**: Spring Processes
+
+### Spring Bean Life Cycle
+
+The life cycle of a Spring Bean is managed by the Spring IoC container. Here is the sequence of steps involved in the life cycle of a Spring Bean:
+
+1. **Instantiation**: The container finds the bean's definition and instantiates the bean.
+2. **Populate Properties**: The container populates all properties specified in the bean definition using dependency injection.
+3. **Bean Name Awareness**: If the bean implements `BeanNameAware`, the container passes the bean's ID to the `setBeanName` method.
+4. **Bean Factory Awareness**: If the bean implements `BeanFactoryAware`, the container passes the `BeanFactory` to the `setBeanFactory` method.
+5. **Pre-Initialization**: If there are any `BeanPostProcessors`, the `postProcessBeforeInitialization` method is called.
+6. **Initialization**: If the bean implements `InitializingBean`, its `afterPropertiesSet` method is called. If the bean has an `init-method`, that method is called.
+7. **Post-Initialization**: If there are any `BeanPostProcessors`, the `postProcessAfterInitialization` method is called.
+8. **Bean Ready for Use**: The bean is now ready to be used.
+9. **Destruction**: If the bean implements `DisposableBean`, its `destroy` method is called. If the bean has a `destroy-method`, that method is called.
+
+### Example of a Bean Life Cycle
+
+```java
+import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+public class ExampleBean implements BeanNameAware, BeanFactoryAware, InitializingBean, DisposableBean {
+    private String name;
+
+    @Override
+    public void setBeanName(String name) {
+        System.out.println("Bean Name Aware: " + name);
+        this.name = name;
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) {
+        System.out.println("Bean Factory Aware");
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        System.out.println("Initializing Bean");
+    }
+
+    public void customInit() {
+        System.out.println("Custom Init Method");
+    }
+
+    @Override
+    public void destroy() {
+        System.out.println("Disposable Bean");
+    }
+
+    public void customDestroy() {
+        System.out.println("Custom Destroy Method");
+    }
+}
+
+@Configuration
+public class AppConfig {
+    @Bean(initMethod = "customInit", destroyMethod = "customDestroy")
+    public ExampleBean exampleBean() {
+        return new ExampleBean();
+    }
+}
+```
+
+### Spring Bean Scope
+
+The scope of a bean defines the life cycle and visibility of that bean in the contexts in which it is used. Spring supports several types of bean scopes:
+
+1. **Singleton** (Default): Only one instance of the bean is created per Spring IoC container. All requests for the bean will return the same instance.
+2. **Prototype**: A new instance is created every time the bean is requested.
+3. **Request**: A single instance is created for each HTTP request. Only valid in a web-aware Spring ApplicationContext.
+4. **Session**: A single instance is created for each HTTP session. Only valid in a web-aware Spring ApplicationContext.
+5. **Global Session**: A single instance is created for the global HTTP session. Only valid in a web-aware Spring ApplicationContext.
+6. **Application**: A single instance is created per ServletContext. Only valid in a web-aware Spring ApplicationContext.
+7. **WebSocket**: A single instance is created per WebSocket.
+
+### Example of Bean Scopes
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    @Scope("singleton")
+    public ExampleBean singletonBean() {
+        return new ExampleBean();
+    }
+
+    @Bean
+    @Scope("prototype")
+    public ExampleBean prototypeBean() {
+        return new ExampleBean();
+    }
+}
+```
+
+- @Bean on Methods: Used to define the creation of a specific bean. The method's return value is registered as a bean.
+- Class-Level Annotations (@Configuration): Indicate that a class can be used by the Spring container to create and configure beans. The class itself is a source of bean definitions, not a bean.
+
+### Using Scopes in Spring Boot
+
+Spring Boot makes it easy to configure bean scopes using annotations. Here is an example of using different scopes:
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.web.context.annotation.SessionScope;
+
+@Component
+@Scope("singleton")
+public class SingletonBean {
+    // Singleton scoped bean
+}
+
+@Component
+@Scope("prototype")
+public class PrototypeBean {
+    // Prototype scoped bean
+}
+
+@Component
+@RequestScope
+public class RequestScopedBean {
+    // Request scoped bean
+}
+
+@Component
+@SessionScope
+public class SessionScopedBean {
+    // Session scoped bean
+}
+```
+
+### Example of Using Bean Scopes in a Controller
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class MyController {
+
+    @Autowired
+    private SingletonBean singletonBean;
+
+    @Autowired
+    private PrototypeBean prototypeBean;
+
+    @Autowired
+    private RequestScopedBean requestScopedBean;
+
+    @Autowired
+    private SessionScopedBean sessionScopedBean;
+
+    @GetMapping("/beans")
+    public String getBeans() {
+        return "Singleton: " + singletonBean +
+               "\nPrototype: " + prototypeBean +
+               "\nRequest Scoped: " + requestScopedBean +
+               "\nSession Scoped: " + sessionScopedBean;
+    }
+}
+```
+
+### Conclusion
+
+Understanding Spring Beans, their lifecycle, and the different scopes they can have is fundamental to developing robust Spring applications. This deep dive covered the basics of Spring Beans, the lifecycle they go through, and the various scopes available to manage their lifecycle and visibility within the application context. By leveraging these features, you can create more modular, reusable, and maintainable code.

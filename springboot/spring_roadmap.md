@@ -5,9 +5,7 @@
 - [x] Dependency Injection
 - [x] Spring IOC
 - [x] Spring AOP
-- [ ] Spring Beans
-- [ ] Spring Bean Life Cycle
-- [ ] Spring Bean Scope
+- [x] Spring Beans, Bean Life Cycle, and Bean Scope
 - [ ] Spring Configuration Styles (XML, Java-based, Annotation-based)
 
 ## Spring Boot Fundamentals
