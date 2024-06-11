@@ -78,7 +78,7 @@
 ## Testing and DevOps
 
 - [-] Testing Spring Boot Application (MOCKMVC), (`@SpringBootTest`, `@Test`, `@BeforeEach`, `@AfterEach`, `@BeforeAll`, `@AfterAll`, `@BeforeTestClass`, `@AfterTestClass`, `@BeforeTestMethod`, `@AfterTestMethod`, `@BeforeSuite`, `@AfterSuite`, `@ParameterizedTest`, `@Disabled`, `@Mock`, `@InjectMocks`)
-- [ ] DevOps (Profiles)
+- [-] DevOps (Profiles)
 - [ ] Exception Handling (Using @ControllerAdvice and @ExceptionHandler
 - [ ] Custom Error Responses
 - [ ] Global Exception Handling)
