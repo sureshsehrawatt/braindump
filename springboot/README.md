@@ -2059,3 +2059,58 @@ Spring Boot Actuator is included as a dependency in Spring Boot starters, making
 ### Conclusion
 
 Spring Boot Actuator is a valuable tool for monitoring and managing Spring Boot applications in production environments. By providing a comprehensive set of built-in endpoints and metrics, Actuator simplifies the process of monitoring application health, performance, and behavior. Leveraging Actuator enables you to gain insights into your application's runtime characteristics, diagnose issues efficiently, and ensure optimal performance and reliability.
+
+The `ApplicationContext` is a central interface in Spring for providing configuration information to the Spring container and managing the bean lifecycle. It represents the Spring IoC container and is responsible for instantiating, configuring, and managing beans defined in the Spring application context.
+
+### Features and Responsibilities
+
+1. **Bean Instantiation and Dependency Injection**: The `ApplicationContext` is responsible for creating and wiring beans defined in the Spring configuration files or Java classes. It handles dependency injection, resolving dependencies between beans, and managing their lifecycle.
+
+2. **Bean Scoping**: It supports different bean scopes such as singleton, prototype, request, session, etc. You can define the scope of a bean using annotations like `@Scope` or XML configuration.
+
+3. **Resource Loading**: The `ApplicationContext` can load application resources such as properties files, XML files, and classpath resources. It provides convenient methods for accessing these resources within the application.
+
+4. **Environment Management**: It manages the application's environment properties, including system properties, environment variables, and configuration properties loaded from external sources like property files or databases.
+
+5. **Event Handling**: The `ApplicationContext` supports the publishing and handling of application events. It allows beans to listen for and respond to events within the application context, facilitating loose coupling and communication between components.
+
+6. **AOP Support**: Spring's AOP features, such as aspect weaving and advice execution, are integrated into the `ApplicationContext`. It automatically applies aspect-oriented programming techniques to beans managed within the context.
+
+7. **Internationalization and Localization**: The `ApplicationContext` provides support for internationalization (i18n) and localization (l10n) by resolving message codes to localized messages using configured message sources.
+
+### Types of ApplicationContext
+
+1. **AnnotationConfigApplicationContext**: It's used to bootstrap the application context based on Java configuration classes annotated with `@Configuration`.
+
+2. **ClassPathXmlApplicationContext**: It loads the application context from XML configuration files located on the classpath.
+
+3. **FileSystemXmlApplicationContext**: Similar to `ClassPathXmlApplicationContext`, but it loads XML configuration files from the file system instead of the classpath.
+
+4. **WebApplicationContext**: It's a specialized `ApplicationContext` for web applications and provides additional features such as access to ServletContext attributes and support for web-specific scopes.
+
+### Example Usage
+
+```java
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class MyApp {
+    public static void main(String[] args) {
+        // Create and configure the application context using Java configuration classes
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+
+        // Retrieve beans from the context and use them
+        MyService myService = context.getBean(MyService.class);
+        myService.doSomething();
+    }
+}
+```
+
+In this example:
+- We create an `ApplicationContext` using `AnnotationConfigApplicationContext`, passing the configuration class `AppConfig`.
+- The `AppConfig` class is annotated with `@Configuration` and contains bean definitions.
+- We retrieve a bean (`MyService`) from the context and use it in our application.
+
+### Conclusion
+
+The `ApplicationContext` is a fundamental component of the Spring Framework, responsible for managing beans, handling dependencies, and providing various application services. It serves as the backbone of the Spring IoC container and plays a crucial role in the lifecycle of Spring-managed beans. Understanding the `ApplicationContext` and its features is essential for effective Spring application development.

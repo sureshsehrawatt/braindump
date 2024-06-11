@@ -1,11 +1,3 @@
-### ApplicationContext
-
-ApplicationContext is a central interface in Spring for configuration and management of beans.
-
-The ApplicationContext is the thing that understands the user's wishes in terms of where and what should be injected based on the configuration a user provides, either through an xml file or annotations.
-
-In a project, especially when using build tools like Maven or Gradle, certain terms are used to uniquely identify and structure the project. These terms include group, artifact, name, and package.
-
 ### Archetype
 
 - **Archetype**: A project template in Maven.
