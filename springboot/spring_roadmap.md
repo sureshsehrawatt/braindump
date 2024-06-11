@@ -28,7 +28,7 @@
   - [ ] `@PostConstruct`
   - [ ] `@Scheduled`
   - [ ] `@EnableWebSecurity`)
-- [ ] Autoconfiguration
+- [-] Autoconfiguration
 - [ ] Elegant Configuration Management
 - [ ] Spring Boot Actuator
 - [ ] Embedded Server
@@ -105,4 +105,4 @@
 
 
 git msg = Author | Project Name | Category | Topic name
-example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | @Autowired and @Configuration"
+example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | Autoconfiguration"
