@@ -856,7 +856,7 @@ Understanding Spring Beans, their lifecycle, and the different scopes they can h
 
 ## Important Annotations
 
-### `@SpringBootApplication`
+## `@SpringBootApplication`
 
 `@SpringBootApplication` is a meta-annotation that combines several annotations to simplify the configuration of Spring Boot applications. Let's dive deep into its characteristics, components, and usage:
 
@@ -960,3 +960,174 @@ In this example, `@Configuration` indicates that the class declares bean definit
 ### Conclusion:
 
 `@SpringBootApplication` is a powerful meta-annotation that combines three commonly used annotations (`@Configuration`, `@EnableAutoConfiguration`, `@ComponentScan`) into a single annotation, simplifying the configuration of Spring Boot applications. It promotes convention over configuration and provides a streamlined approach to building Spring Boot applications with sensible defaults and minimal configuration overhead.
+
+## `@Bean`
+
+The `@Bean` annotation in Spring is used to declare a method as a bean producer method. When Spring processes a configuration class, it looks for `@Bean` annotations and executes the corresponding methods to produce bean instances. Let's dive deeper into the characteristics, usage, and sub-annotations of `@Bean`:
+
+### Characteristics:
+
+1. **Method-Level Annotation**: `@Bean` is a method-level annotation, meaning it is applied to methods within a `@Configuration` class.
+
+2. **Manual Bean Declaration**: It allows developers to manually declare bean instances by writing factory methods.
+
+3. **Customization**: Methods annotated with `@Bean` can be customized to provide bean instances with specific configurations, dependencies, or initialization logic.
+
+### Usage:
+
+1. **Basic Usage**: Declare a method annotated with `@Bean` within a `@Configuration` class. The method's return type defines the bean type, and its name defines the bean's name.
+
+    ```java
+    @Configuration
+    public class AppConfig {
+
+        @Bean
+        public MyBean myBean() {
+            return new MyBean();
+        }
+    }
+    ```
+
+2. **Dependency Injection**: `@Bean` methods can accept parameters, allowing for dependency injection of other beans or values.
+
+    ```java
+    @Configuration
+    public class AppConfig {
+
+        @Bean
+        public MyService myService(MyRepository repository) {
+            return new MyService(repository);
+        }
+    }
+    ```
+
+3. **Customization**: `@Bean` methods can include custom logic to configure or initialize the bean instance.
+
+    ```java
+    @Configuration
+    public class AppConfig {
+
+        @Bean
+        public DataSource dataSource() {
+            BasicDataSource dataSource = new BasicDataSource();
+            dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+            dataSource.setUrl("jdbc:mysql://localhost:3306/mydb");
+            dataSource.setUsername("username");
+            dataSource.setPassword("password");
+            return dataSource;
+        }
+    }
+    ```
+
+### Sub-Annotations:
+
+There are no sub-annotations directly associated with `@Bean`, but it can be used in conjunction with other annotations such as:
+
+- `@Conditional`: Allows conditional bean registration based on certain conditions.
+- `@Scope`: Specifies the scope of the bean (e.g., singleton, prototype, request, session, etc.).
+- `@Lazy`: Indicates that the bean should be lazily initialized.
+- `@DependsOn`: Specifies dependencies between beans.
+
+Certainly! Here are examples demonstrating the usage of `@Conditional`, `@Scope`, `@Lazy`, and `@DependsOn` annotations:
+
+### 1. `@Conditional`:
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    @Conditional(MyCondition.class)
+    public MyBean myBean() {
+        return new MyBean();
+    }
+}
+```
+
+```java
+import org.springframework.context.annotation.Condition;
+import org.springframework.context.annotation.ConditionContext;
+import org.springframework.core.type.AnnotatedTypeMetadata;
+
+public class MyCondition implements Condition {
+
+    @Override
+    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+        // Condition logic here
+        return true; // Example condition always returns true
+    }
+}
+```
+
+### 2. `@Scope`:
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    @Scope("prototype")
+    public MyPrototypeBean myPrototypeBean() {
+        return new MyPrototypeBean();
+    }
+}
+```
+
+### 3. `@Lazy`:
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    @Lazy
+    public MyLazyBean myLazyBean() {
+        return new MyLazyBean();
+    }
+}
+```
+
+### 4. `@DependsOn`:
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+
+@Configuration
+public class AppConfig {
+
+    @Bean(name = "beanOne")
+    public MyBean beanOne() {
+        return new MyBean();
+    }
+
+    @Bean(name = "beanTwo")
+    @DependsOn("beanOne")
+    public MyDependentBean beanTwo() {
+        return new MyDependentBean();
+    }
+}
+```
+
+In these examples:
+- `MyCondition` represents a custom condition that determines whether the bean should be registered based on certain conditions.
+- `MyPrototypeBean` is a bean with prototype scope, meaning a new instance is created each time it is requested.
+- `MyLazyBean` is a lazily initialized bean, meaning it is created only when first requested.
+- `MyDependentBean` depends on `beanOne` and will be initialized only after `beanOne` has been initialized.
+
+### Conclusion:
+
+`@Bean` is a powerful annotation in Spring that allows for manual declaration and customization of bean instances within configuration classes. It provides flexibility in defining bean dependencies, configurations, and initialization logic, making it a fundamental building block for configuring Spring applications.
