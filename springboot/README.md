@@ -2150,3 +2150,106 @@ In this example:
 
 The `ApplicationContext` is a fundamental component of the Spring Framework, responsible for managing beans, handling dependencies, and providing various application services. It serves as the backbone of the Spring IoC container and plays a crucial role in the lifecycle of Spring-managed beans. Understanding the `ApplicationContext` and its features is essential for effective Spring application development.
 
+## ORM in Spring Boot
+
+Object-Relational Mapping (ORM) in Spring Boot is a mechanism that allows developers to interact with relational databases using object-oriented programming techniques. It abstracts away the complexities of SQL queries and database interactions, enabling developers to work with domain objects directly.
+
+### Key Concepts and Components
+
+1. **Entity Classes**: In Spring Boot, entity classes represent tables in the database. These classes typically have annotations such as `@Entity`, `@Table`, `@Column`, etc., to map them to the corresponding database tables and columns. Entity classes also define relationships between tables using annotations like `@ManyToOne`, `@OneToMany`, etc.
+
+2. **Repository Interfaces**: Repository interfaces define methods for CRUD (Create, Read, Update, Delete) operations on entity objects. Spring Boot automatically generates implementations of these interfaces at runtime, providing seamless database access without the need to write SQL queries manually. Repositories are typically annotated with `@Repository` or `@RepositoryRestResource`.
+
+3. **JPA (Java Persistence API)**: JPA is a specification for ORM frameworks in Java, and Spring Boot includes support for JPA through libraries like Hibernate. JPA provides a set of annotations and APIs for mapping Java objects to database tables and executing CRUD operations. Spring Boot's `@EnableJpaRepositories` annotation enables JPA repository support in the application.
+
+4. **Data Source Configuration**: Spring Boot simplifies the configuration of data sources, allowing developers to specify database connection details in the `application.properties` or `application.yml` file. By default, Spring Boot auto-configures a data source based on the application's classpath and dependencies.
+
+5. **Transactions**: Spring Boot supports declarative transaction management using annotations such as `@Transactional`. Transactions ensure data integrity by providing ACID (Atomicity, Consistency, Isolation, Durability) properties when performing multiple database operations as a single unit of work.
+
+### Example Usage
+
+Here's an example of using ORM in Spring Boot to create an entity class, repository interface, and perform CRUD operations on a database table:
+
+1. **Dependencies** (in `pom.xml`):
+
+   ```xml
+   <dependency>
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-starter-data-jpa</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>com.h2database</groupId>
+       <artifactId>h2</artifactId>
+       <scope>runtime</scope>
+   </dependency>
+   ```
+
+2. **Configuration** (in `application.properties`):
+
+   ```properties
+   spring.datasource.url=jdbc:h2:mem:testdb
+   spring.datasource.driverClassName=org.h2.Driver
+   spring.datasource.username=sa
+   spring.datasource.password=password
+   spring.jpa.hibernate.ddl-auto=update
+   ```
+
+3. **Entity Class**:
+
+   ```java
+   @Entity
+   public class User {
+       @Id
+       @GeneratedValue(strategy = GenerationType.IDENTITY)
+       private Long id;
+       private String name;
+       private String email;
+       // Getters and Setters
+   }
+   ```
+
+4. **Repository Interface**:
+
+   ```java
+   public interface UserRepository extends JpaRepository<User, Long> {
+   }
+   ```
+
+5. **Service (Optional)**:
+
+   ```java
+   @Service
+   public class UserService {
+       @Autowired
+       private UserRepository userRepository;
+       public List<User> getAllUsers() { return userRepository.findAll(); }
+       public User getUserById(Long id) { return userRepository.findById(id).orElse(null); }
+       public User saveUser(User user) { return userRepository.save(user); }
+       public void deleteUser(Long id) { userRepository.deleteById(id); }
+   }
+   ```
+
+6. **Controller**:
+   ```java
+   @RestController
+   @RequestMapping("/users")
+   public class UserController {
+       @Autowired
+       private UserService userService;
+       @GetMapping
+       public List<User> getAllUsers() { return userService.getAllUsers(); }
+       @GetMapping("/{id}")
+       public User getUserById(@PathVariable Long id) { return userService.getUserById(id); }
+       public User getUserById(@PathVariable Long id) { return userService.getUserById(id); RestController
+       public User getUserById(@Mappings
+       riable Long id) { return userService.getUserById(id); }
+       @PostMapping
+       public User createUser(@RequestBody User user) { return userService.saveUser(user); }
+       @DeleteMapping("/{id}")
+       public void deleteUser(@PathVariable Long id) { userService.deleteUser(id); }
+   }
+   ```
+
+### Conclusion
+
+ORM in Spring Boot simplifies database interactions by providing a higher-level abstraction over SQL queries and JDBC operations. By defining entity classes, repository interfaces, and configuring data sources, developers can easily perform CRUD operations on relational databases using familiar object-oriented techniques. ORM frameworks like Hibernate, coupled with Spring Boot's support for JPA, enable rapid development of database-driven applications with minimal boilerplate code.

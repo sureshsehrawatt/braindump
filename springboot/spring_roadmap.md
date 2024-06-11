@@ -33,7 +33,7 @@
 - [-] Spring Boot Actuator
 - [x] Embedded Server
 - [x] ApplicationContext
-- [ ] ORM in Spring Boot
+- [x] ORM in Spring Boot
 
 ## RESTful Services Development
 
@@ -105,4 +105,4 @@
 
 
 git msg = Author | Project Name | Category | Topic name
-example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | Embedded Server"
+example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | ORM in Spring Boot"
