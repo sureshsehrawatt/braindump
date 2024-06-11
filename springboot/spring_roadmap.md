@@ -2,8 +2,8 @@
 
 ## Core Spring Framework
 
-- [ ] Dependency Injection
-- [ ] Spring IOC
+- [x] Dependency Injection
+- [x] Spring IOC
 - [ ] Spring AOP
 - [ ] Spring Beans
 - [ ] Spring Bean Life Cycle

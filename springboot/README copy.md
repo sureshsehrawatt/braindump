@@ -119,11 +119,6 @@ This will generate a WAR file in the `target` directory if your Maven project is
 
 `ps aux | grep 19277`
 
-## Inversion of Control (IoC)
-
-In simple terms..
-
-**IOC(Inversion of Control)** is a concept that means: Instead of creating objects with the new operator,let the container do it for you.
 
 ## `@Component`
 

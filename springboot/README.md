@@ -6,7 +6,7 @@ Spring Boot is a framework for building production-ready applications in Java wi
 
 ## Core Spring Framework
 - [Dependency Injection](#dependency-injection)
-- [Spring IOC](#spring-ioc)
+- [Spring IoC](#spring-ioc)
 - [Spring AOP](#spring-aop)
 - [Spring Beans](#spring-beans)
 - [Spring Bean Life Cycle](#spring-bean-life-cycle)
@@ -298,3 +298,29 @@ In this example, the `Car` class depends on the `Engine` class. The `Engine` obj
 ### Summary:
 
 Dependency Injection is a powerful design pattern that promotes loose coupling, testability, reusability, and maintainability in software applications. It allows components to be easily composed and replaced, leading to more modular and flexible codebases. In Spring, DI is a core principle that enables the creation of robust and scalable applications.
+
+## Spring IoC
+
+Inversion of Control (IoC) is a design principle used to invert the control of object creation and management from the program itself to a framework or container. In Spring, IoC is implemented through the Dependency Injection (DI) pattern, where the Spring IoC container is responsible for instantiating, configuring, and managing the lifecycle of beans (objects).
+
+In simple terms..
+
+**IOC(Inversion of Control)** is a concept that means: Instead of creating objects with the new operator,let the container do it for you.
+
+#### Key Components of Spring IoC
+
+1. **Spring IoC Container**: The core of Spring's IoC is the container, which is responsible for managing the lifecycle and configuration of application objects. The container uses metadata to know what objects to instantiate, configure, and assemble.
+
+2. **Beans**: Beans are the objects that form the backbone of your application and are managed by the Spring IoC container.
+
+3. **Configuration Metadata**: Configuration metadata can be provided in XML, annotations, or Java configuration classes. It tells the container how to instantiate, configure, and assemble the objects in your application.
+
+#### Types of IoC Containers in Spring
+
+1. **BeanFactory**: The simplest container providing the basic functionality. `BeanFactory` uses lazy initialization (beans are instantiated only when they are requested).
+
+2. **ApplicationContext**: A more advanced container that includes all the functionalities of `BeanFactory` plus additional enterprise-specific functionalities such as event propagation, declarative mechanisms to create a bean, and various ways to look up. `ApplicationContext` eagerly loads all singleton beans at startup.
+
+#### Conclusion
+
+Spring IoC is a powerful mechanism for managing the lifecycle and dependencies of objects in your application. By leveraging Spring IoC and DI, you can achieve better modularity, easier testing, and more maintainable code. Understanding the various types of DI, bean scopes, and lifecycle management in Spring IoC will help you design and develop robust Spring applications.
