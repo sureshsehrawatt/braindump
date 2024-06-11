@@ -1652,6 +1652,7 @@ private UserService userService;
 Using `@Autowired` in Spring Boot streamlines dependency injection, making it easier to manage and test your components.
 
 ## `@Configuration`
+
 The `@Configuration` annotation in Spring is an important part of the framework's configuration mechanism. It is used to define a configuration class that provides bean definitions to the Spring container. This approach is part of Spring's Java-based configuration model, which offers a type-safe alternative to traditional XML-based configuration. Here’s a deep dive into the `@Configuration` annotation, its usage, features, and benefits.
 
 ### Purpose and Role of `@Configuration`
@@ -1679,6 +1680,7 @@ public class AppConfig {
 ```
 
 In this example:
+
 - The `AppConfig` class is annotated with `@Configuration`, indicating that it is a source of bean definitions.
 - The `myService` method is annotated with `@Bean`, meaning it returns a bean that will be managed by the Spring container.
 
@@ -1718,6 +1720,7 @@ public class AppConfig {
 ```
 
 In this example:
+
 - The `myService` bean depends on the `myRepository` bean.
 - Spring ensures that `myRepository` is created and injected into `myService`.
 
@@ -1743,6 +1746,7 @@ public class AppConfig {
 ```
 
 In this example:
+
 - The `myService` bean will only be created if `MyCondition` is met.
 
 ### Profiles
@@ -1772,6 +1776,7 @@ public class AppConfig {
 ```
 
 In this example:
+
 - The `devService` bean is created when the `dev` profile is active.
 - The `prodService` bean is created when the `prod` profile is active.
 
@@ -1793,6 +1798,7 @@ public class AppConfig {
 ```
 
 In this example:
+
 - The `AppConfig` class imports bean definitions from `OtherConfig`.
 
 #### Property Sources
@@ -1809,6 +1815,7 @@ public class AppConfig {
 ```
 
 In this example:
+
 - The `AppConfig` class loads properties from the `application.properties` file.
 
 ### Benefits of `@Configuration`
@@ -1830,6 +1837,7 @@ In this example:
 By leveraging `@Configuration`, you can create robust, maintainable, and flexible Spring applications with Java-based configuration, ensuring better control over your application's components and their lifecycle.
 
 ## Autoconfiguration
+
 Autoconfiguration is one of the core features of Spring Boot that makes it easy to create stand-alone, production-grade Spring applications. It aims to reduce the need for extensive configuration by automatically configuring Spring applications based on the dependencies present on the classpath and the beans you define.
 
 ### Key Concepts of Autoconfiguration
@@ -1954,3 +1962,100 @@ When you create a Spring Boot application with dependencies, the autoconfigurati
 
 Spring Boot's autoconfiguration is a powerful feature that simplifies the setup and development of Spring applications by automatically configuring beans based on the classpath and environment. It follows the principle of "convention over configuration" while providing flexibility for customization. This makes it easier to create production-ready applications with minimal effort.
 
+## Spring Boot Actuator
+
+Spring Boot Actuator is a powerful tool that provides production-ready features to help you monitor and manage your Spring Boot application. It offers a range of built-in endpoints and metrics that enable you to monitor various aspects of your application's health, performance, and behavior at runtime. Actuator endpoints expose valuable information about your application's internals, making it easier to diagnose issues, analyze performance, and gather operational insights.
+
+### Key Features of Spring Boot Actuator
+
+1. **Health Indicators**: The `/actuator/health` endpoint provides information about the application's health status. Health indicators can be customized to check various aspects such as database connectivity, disk space, and system load.
+
+2. **Metrics Gathering**: Actuator collects metrics about your application's performance and behavior, including HTTP request counts, memory usage, garbage collection statistics, and more. Metrics are available via the `/actuator/metrics` endpoint and can be exported to various monitoring systems.
+
+3. **Environment Information**: The `/actuator/env` endpoint exposes details about the application's environment, including configuration properties, system properties, and environment variables.
+
+4. **Application Information**: Actuator provides endpoints (`/actuator/info` and `/actuator/beans`) to retrieve general information about the application context, such as the application name, version, and available beans.
+
+5. **Endpoint Customization**: Actuator endpoints can be customized and secured to restrict access to sensitive information. You can enable or disable specific endpoints and configure security settings using Spring Boot properties.
+
+6. **Integration with Monitoring Systems**: Actuator seamlessly integrates with various monitoring systems and tools, such as Prometheus, Grafana, and Micrometer. It provides compatibility with popular observability platforms, enabling comprehensive monitoring and alerting.
+
+7. **Extensibility**: Actuator allows you to extend its functionality by creating custom endpoints, health indicators, and metrics collectors tailored to your application's specific requirements.
+
+### Example Usage
+
+1. **Health Endpoint**: Accessing the `/actuator/health` endpoint provides a summary of the application's health status, including details about database connectivity, disk space, and other components.
+
+2. **Metrics Endpoint**: Use the `/actuator/metrics` endpoint to retrieve metrics about your application's performance, such as HTTP request rates, JVM memory usage, and database connection pool metrics.
+
+3. **Environment Endpoint**: Accessing the `/actuator/env` endpoint provides information about the application's configuration properties, system properties, and environment variables.
+
+4. **Custom Endpoints**: Define custom endpoints to expose application-specific information or perform administrative tasks. Custom endpoints can be implemented as Spring beans and exposed through Actuator.
+
+To utilize Spring Boot Actuator in your Spring Boot application, you need to follow these steps:
+
+### 1. Add Actuator Dependency
+
+Ensure that the `spring-boot-starter-actuator` dependency is included in your project. If you're using Maven, add the following dependency to your `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
+
+For Gradle, add the following to your `build.gradle` file:
+
+```gradle
+implementation 'org.springframework.boot:spring-boot-starter-actuator'
+```
+
+### 2. Configure Endpoints (Optional)
+
+By default, Actuator endpoints are enabled, but you can customize their behavior in your `application.properties` or `application.yml` file:
+
+```properties
+# Customize Actuator endpoints
+management.endpoints.web.exposure.include=health,info,metrics,env,beans
+```
+
+### 3. Access Actuator Endpoints
+
+Once your application is running, you can access Actuator endpoints in your browser or using HTTP client tools like cURL or Postman:
+
+- Health Endpoint: `http://localhost:8080/actuator/health`
+- Info Endpoint: `http://localhost:8080/actuator/info`
+- Metrics Endpoint: `http://localhost:8080/actuator/metrics`
+- Environment Endpoint: `http://localhost:8080/actuator/env`
+- Beans Endpoint: `http://localhost:8080/actuator/beans`
+- Custom Endpoints: If you've defined custom endpoints, you can access them using their configured paths.
+
+### 4. Secure Endpoints (Optional)
+
+Actuator endpoints may expose sensitive information, so it's essential to secure them appropriately. You can configure security settings in your `application.properties` or `application.yml` file:
+
+```properties
+# Secure Actuator endpoints with basic authentication
+management.endpoints.web.exposure.include=health,info,metrics,env,beans
+management.endpoint.health.show-details=always
+management.endpoint.info.enabled=true
+management.endpoint.metrics.enabled=true
+management.endpoint.env.enabled=true
+management.endpoint.beans.enabled=true
+management.endpoint.health.probe.enabled=true
+management.endpoint.health.roles=admin
+management.security.enabled=true
+```
+
+### 5. Customize Actuator
+
+You can customize Actuator behavior by implementing custom health indicators, metrics collectors, or endpoints tailored to your application's requirements. Simply create Spring beans annotated with `@Component` or `@Configuration` and expose them accordingly.
+
+### Integration with Spring Boot
+
+Spring Boot Actuator is included as a dependency in Spring Boot starters, making it effortless to enable and use. To enable Actuator in your Spring Boot application, simply include the `spring-boot-starter-actuator` dependency in your project's `pom.xml` or `build.gradle` file. Spring Boot Actuator automatically exposes its endpoints, allowing you to monitor and manage your application with minimal configuration.
+
+### Conclusion
+
+Spring Boot Actuator is a valuable tool for monitoring and managing Spring Boot applications in production environments. By providing a comprehensive set of built-in endpoints and metrics, Actuator simplifies the process of monitoring application health, performance, and behavior. Leveraging Actuator enables you to gain insights into your application's runtime characteristics, diagnose issues efficiently, and ensure optimal performance and reliability.

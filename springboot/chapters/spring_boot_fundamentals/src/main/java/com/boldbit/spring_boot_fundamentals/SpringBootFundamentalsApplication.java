@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import com.boldbit.spring_boot_fundamentals.importantAnotations.Bean.subAnnotations.Lazy.MyLazyBean;
 
 @SpringBootApplication
-// @ComponentScan(basePackages = "com.boldbit.spring_boot_fundamentals.importantAnotations.Bean.subAnnotations.Lazy"))
+@ComponentScan(basePackages = "com.boldbit.spring_boot_fundamentals.importantAnotations.Bean.subAnnotations.Lazy")
 public class SpringBootFundamentalsApplication {
 
 	public static void main(String[] args) {

@@ -30,7 +30,7 @@
   - [ ] `@EnableWebSecurity`)
 - [-] Autoconfiguration
 - [ ] Elegant Configuration Management
-- [ ] Spring Boot Actuator
+- [-] Spring Boot Actuator
 - [ ] Embedded Server
 - [ ] ApplicationContext
 - [ ] ORM in Spring Boot
@@ -105,4 +105,4 @@
 
 
 git msg = Author | Project Name | Category | Topic name
-example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | Autoconfiguration"
+example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | Spring Boot Actuator"
