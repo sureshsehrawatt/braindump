@@ -31,23 +31,22 @@
 - [-] Autoconfiguration
 - [ ] Elegant Configuration Management
 - [-] Spring Boot Actuator
-- [x] Embedded Server
+- [-] Embedded Server
 - [x] ApplicationContext
-- [x] ORM in Spring Boot
+- [-] ORM in Spring Boot
 
 ## RESTful Services Development
 
-- [x] REST APIs
+- [-] REST APIs
 - [x] (GET, POST, PUT, DELETE)
 - [x] (`@RestController`, `@RequestBody`, `@PathVariable`, `@Mappings`)
 - [x] ResponseEntity
 - [x] Handling Path Variables and Request Parameters
-- [ ] Repository/DAO Layer
-- [ ] (JPA
-- [ ] JDBC
-- [ ] MongoDB)
-- [ ] MongoTemplate
-- [ ] Criteria and Query
+- [-] (JPA
+- [-] JDBC
+- [-] MongoDB)
+- [-] MongoTemplate
+- [-] Criteria and Query
 
 ## Web Application Development
 
@@ -105,4 +104,4 @@
 
 
 git msg = Author | Project Name | Category | Topic name
-example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | RESTful Services Development"
+example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | JPA, JDBC, MongoDB, MongoTemplate, Criteria and Query"
