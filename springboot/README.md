@@ -1836,6 +1836,288 @@ In this example:
 
 By leveraging `@Configuration`, you can create robust, maintainable, and flexible Spring applications with Java-based configuration, ensuring better control over your application's components and their lifecycle.
 
+## `@PostConstruct`
+
+The `@PostConstruct` annotation in Spring is used to annotate a method that should be executed after the bean's properties have been set and the dependency injection is complete. This is particularly useful for performing any initialization logic that requires access to the injected dependencies.
+
+### Key Features:
+
+- **Initialization Logic**: Allows you to perform any custom initialization after dependency injection.
+- **Lifecycle Callback**: Part of the bean lifecycle callbacks defined by JSR-250.
+- **Automatic Execution**: The method annotated with `@PostConstruct` is automatically called by the Spring container once the bean is fully initialized.
+
+### Usage:
+
+#### 1. Basic Example:
+
+Here's a simple example to demonstrate the usage of `@PostConstruct`.
+
+```java
+import javax.annotation.PostConstruct;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyBean {
+
+    @PostConstruct
+    public void init() {
+        // Initialization logic
+        System.out.println("Bean is fully initialized and dependencies are injected.");
+    }
+
+    public void doSomething() {
+        System.out.println("Doing something...");
+    }
+}
+```
+
+In this example, the `init` method will be called automatically after the `MyBean` instance is created and its dependencies are injected.
+
+#### 2. Using with Dependency Injection:
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyService {
+
+    @Autowired
+    private MyRepository myRepository;
+
+    @PostConstruct
+    public void initialize() {
+        // Perform initialization that requires myRepository
+        System.out.println("Initializing MyService with MyRepository");
+    }
+
+    public void performService() {
+        // Business logic
+    }
+}
+```
+
+In this example, the `initialize` method is called after `myRepository` is injected into `MyService`.
+
+### When to Use `@PostConstruct`:
+
+- **Initialization Logic**: When you need to perform some setup or initialization logic that requires access to the injected dependencies.
+- **Setup Non-Bean Resources**: When you need to initialize non-bean resources that the bean depends on.
+- **Validation**: When you need to validate the bean's state after all properties have been set.
+
+### Key Points to Remember:
+
+- **Method Signature**: The method annotated with `@PostConstruct` should be `public` or `protected`, should not take any arguments, and should not return any value (`void`).
+- **Single Execution**: The `@PostConstruct` method is executed only once during the bean lifecycle.
+- **Exception Handling**: If the `@PostConstruct` method throws an exception, it may prevent the bean from being initialized properly and can cause the Spring context to fail to start.
+
+### Practical Example in a Spring Boot Application:
+
+#### 1. `application.properties`:
+
+```properties
+app.init.message=Application Initialized
+```
+
+#### 2. Configuration Class:
+
+```java
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.PostConstruct;
+
+@Configuration
+public class AppConfig {
+
+    @Value("${app.init.message}")
+    private String initMessage;
+
+    @PostConstruct
+    public void init() {
+        System.out.println(initMessage);
+    }
+}
+```
+
+#### 3. Controller Class:
+
+```java
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class MyController {
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello, World!";
+    }
+}
+```
+
+In this example, when the Spring Boot application starts, the message "Application Initialized" will be printed to the console as part of the initialization logic defined in the `@PostConstruct` method of the `AppConfig` class.
+
+### Summary:
+
+- **`@PostConstruct` Annotation**: Used to define initialization logic that runs after dependency injection.
+- **Lifecycle Management**: Helps in managing the bean lifecycle effectively by executing custom logic after the bean is fully initialized.
+- **Use Cases**: Ideal for setting up resources, performing validations, and executing any required setup tasks that depend on injected properties.
+
+By using `@PostConstruct`, you can ensure that your initialization logic is executed at the right time in the bean lifecycle, enhancing the maintainability and reliability of your Spring application.
+
+## `@Value`
+
+The `@Value` annotation in Spring Boot is used to inject values into fields, methods, and constructors from a variety of sources, such as properties files, system properties, environment variables, and more. This makes it a powerful tool for externalizing configuration and ensuring that application settings can be easily changed without modifying the code.
+
+### Key Features:
+
+- **Injection of Property Values**: Inject values from properties files, environment variables, or system properties.
+- **Default Values**: Supports default values if the specified property is not found.
+- **Type Conversion**: Automatically converts the injected value to the type of the target field.
+
+### Usage:
+
+#### 1. Injecting Values from Properties Files:
+
+To inject a value from a properties file, you can use the `@Value` annotation with a placeholder for the property key.
+
+```java
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyComponent {
+
+    @Value("${my.property}")
+    private String myProperty;
+
+    public void printProperty() {
+        System.out.println("Property value: " + myProperty);
+    }
+}
+```
+
+Ensure you have the property defined in your `application.properties` or `application.yml` file:
+
+**application.properties**:
+
+```properties
+my.property=Hello, World!
+```
+
+**application.yml**:
+
+```yaml
+my:
+  property: Hello, World!
+```
+
+#### 2. Injecting Default Values:
+
+You can provide a default value that will be used if the property is not found.
+
+```java
+@Value("${my.property:Default Value}")
+private String myProperty;
+```
+
+#### 3. Injecting System Properties and Environment Variables:
+
+You can also inject system properties or environment variables.
+
+```java
+@Value("${JAVA_HOME}")
+private String javaHome;
+
+@Value("${MY_ENV_VAR:DefaultEnvValue}")
+private String myEnvVar;
+```
+
+#### 4. Type Conversion:
+
+Spring automatically converts the value to the required type.
+
+```java
+@Value("${my.int.property}")
+private int myIntProperty;
+
+@Value("${my.boolean.property}")
+private boolean myBooleanProperty;
+```
+
+### Example in a Spring Boot Application:
+
+**application.properties**:
+
+```properties
+app.name=Spring Boot Application
+app.version=1.0.0
+app.feature.enabled=true
+app.max.users=100
+```
+
+**Component Class**:
+
+```java
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
+public class AppConfig {
+
+    @Value("${app.name}")
+    private String appName;
+
+    @Value("${app.version}")
+    private String appVersion;
+
+    @Value("${app.feature.enabled}")
+    private boolean featureEnabled;
+
+    @Value("${app.max.users}")
+    private int maxUsers;
+
+    public void printConfig() {
+        System.out.println("App Name: " + appName);
+        System.out.println("App Version: " + appVersion);
+        System.out.println("Feature Enabled: " + featureEnabled);
+        System.out.println("Max Users: " + maxUsers);
+    }
+}
+```
+
+**Controller Class**:
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class ConfigController {
+
+    @Autowired
+    private AppConfig appConfig;
+
+    @GetMapping("/config")
+    public String getConfig() {
+        appConfig.printConfig();
+        return "Check the console for the printed configuration.";
+    }
+}
+```
+
+### Summary:
+
+- **`@Value` Annotation**: Used to inject values into fields, methods, and constructors.
+- **Sources**: Properties files, system properties, environment variables, etc.
+- **Default Values**: Supports specifying default values.
+- **Type Conversion**: Automatically converts the injected values to the required types.
+- **Flexibility**: Enhances configuration management and makes the application settings easily changeable without modifying the code.
+
+By using the `@Value` annotation, you can externalize your configuration and make your Spring Boot application more flexible and easier to manage.
+
 ## Autoconfiguration
 
 Autoconfiguration is one of the core features of Spring Boot that makes it easy to create stand-alone, production-grade Spring applications. It aims to reduce the need for extensive configuration by automatically configuring Spring applications based on the dependencies present on the classpath and the beans you define.

@@ -22,11 +22,11 @@
   - [ ] `@EnableTransactionManagement`
   - [x] `@MongoTransactionManager`
   - [x] `@Entity`
-  - [ ] `@Document`
+  - [x] `@Document`
   - [x] `@DBRef`
-  - [ ] `@Value`
-  - [ ] `@PostConstruct`
-  - [ ] `@Scheduled`
+  - [x] `@Value`
+  - [x] `@PostConstruct`
+  - [x] `@Scheduled`
   - [x] `@EnableWebSecurity`)
 - [-] Autoconfiguration
 - [ ] Elegant Configuration Management
@@ -96,10 +96,10 @@
 - [x] Lombok(`@Data`, `@Indexed`, `@NonNull`)
 - [ ] Logging and Monitoring
 - [ ] Spring Batch
-- [x] Scheduling and cron expressions
-- [x] Email Sending
-- [x] Redis
-- [x] Kafka
+- [-] Scheduling and cron expressions
+- [-] Email Sending
+- [-] Redis
+- [-] Kafka
 
 
 git msg = Author | Project Name | Category | Topic name
