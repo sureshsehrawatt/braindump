@@ -13,9 +13,9 @@
 - [-] Important Annotations
   - [x] (`@SpringBootApplication`
   - [x] `@Bean`
-  - [ ] `@Component`
-  - [ ] `@Service`
-  - [ ] `@Component vs @Service`
+  - [x] `@Component`
+  - [x] `@Service`
+  - [x] `@Component vs @Service`
   - [ ] `@Autowired`
   - [ ] `@RestController`
   - [ ] `@Configuration`
@@ -106,4 +106,4 @@
 
 
 git msg = Author | Project Name | Category | Topic name
-example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | @Bean"
+example = git commit -m "A-Suresh Sehrawat | Spring Boot | Spring Boot Fundamentals | Important Annotations | @Component and @Service"

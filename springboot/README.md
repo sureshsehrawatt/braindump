@@ -811,9 +811,11 @@ Understanding Spring Beans, their lifecycle, and the different scopes they can h
 ## Spring Boot Starters
 
 **Overview:**
+
 - Spring Boot Starter simplifies and accelerates Spring application development by providing pre-configured dependencies and auto-configuration.
 
 **Key Features:**
+
 - Pre-packaged Dependencies: Includes curated dependencies tailored for specific use cases or technologies.
 - Auto-Configuration: Spring Boot configures dependencies based on defaults and conventions, reducing manual configuration.
 - Ready-to-Use Templates: Starters often include template code to kickstart project development.
@@ -822,27 +824,33 @@ Understanding Spring Beans, their lifecycle, and the different scopes they can h
 - Enables developers to focus on application logic rather than configuration details.
 
 **Why Spring Boot Starter Projects?**
+
 - Without starters, developers would need to manually select and configure dependencies, leading to increased complexity and configuration overhead.
 
 **Example Scenario:**
+
 - Consider developing a web application using Spring MVC without starters:
   - Requires selecting compatible versions of frameworks such as Spring MVC, Jackson Databind, Hibernate Validator, and Log4j.
   - Involves configuring settings for dispatcher servlet, view resolver, error pages, web jars, etc.
   - Similar setup needed for JPA, including providing jars and configuring datasource, entity manager, transaction manager, etc.
 
 **Spring Boot Starter Web:**
+
 - Offers essential features for developing web applications or RESTful services.
 - Simplifies project setup by providing compatible dependencies and auto-configuration.
 - Example of usage: Spring Initializr to create a project with Spring Boot Starter Web.
 
 **Dependencies:**
+
 - Includes core Spring dependencies, Spring MVC, Jackson for JSON binding, Hibernate Validator for validation, Tomcat as the embedded servlet container, and logging frameworks.
 
 **Auto-Configuration:**
+
 - Automatically configures key components like dispatcher servlet, error pages, and web jars.
 - Eliminates the need for manual configuration, enabling quick project setup and development.
 
 **Other Starter Project Options:**
+
 - Various starter projects cater to different use cases:
   - spring-boot-starter-web-services
   - spring-boot-starter-test
@@ -927,27 +935,27 @@ In this example, `@Configuration` indicates that the class declares bean definit
 
 1. **Basic Usage**: Annotate the main class of the Spring Boot application with `@SpringBootApplication` to enable auto-configuration, component scanning, and bean definition.
 
-    ```java
-    import org.springframework.boot.SpringApplication;
-    import org.springframework.boot.autoconfigure.SpringBootApplication;
+   ```java
+   import org.springframework.boot.SpringApplication;
+   import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-    @SpringBootApplication
-    public class MyApplication {
+   @SpringBootApplication
+   public class MyApplication {
 
-        public static void main(String[] args) {
-            SpringApplication.run(MyApplication.class, args);
-        }
-    }
-    ```
+       public static void main(String[] args) {
+           SpringApplication.run(MyApplication.class, args);
+       }
+   }
+   ```
 
 2. **Customization**: `@SpringBootApplication` can be customized using its attributes to override default behaviors, such as disabling specific auto-configurations or specifying additional component scan base packages.
 
-    ```java
-    @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-    public class MyApplication {
-        // Application code
-    }
-    ```
+   ```java
+   @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+   public class MyApplication {
+       // Application code
+   }
+   ```
 
 ### Components Enabled by @SpringBootApplication:
 
@@ -977,47 +985,47 @@ The `@Bean` annotation in Spring is used to declare a method as a bean producer 
 
 1. **Basic Usage**: Declare a method annotated with `@Bean` within a `@Configuration` class. The method's return type defines the bean type, and its name defines the bean's name.
 
-    ```java
-    @Configuration
-    public class AppConfig {
+   ```java
+   @Configuration
+   public class AppConfig {
 
-        @Bean
-        public MyBean myBean() {
-            return new MyBean();
-        }
-    }
-    ```
+       @Bean
+       public MyBean myBean() {
+           return new MyBean();
+       }
+   }
+   ```
 
 2. **Dependency Injection**: `@Bean` methods can accept parameters, allowing for dependency injection of other beans or values.
 
-    ```java
-    @Configuration
-    public class AppConfig {
+   ```java
+   @Configuration
+   public class AppConfig {
 
-        @Bean
-        public MyService myService(MyRepository repository) {
-            return new MyService(repository);
-        }
-    }
-    ```
+       @Bean
+       public MyService myService(MyRepository repository) {
+           return new MyService(repository);
+       }
+   }
+   ```
 
 3. **Customization**: `@Bean` methods can include custom logic to configure or initialize the bean instance.
 
-    ```java
-    @Configuration
-    public class AppConfig {
+   ```java
+   @Configuration
+   public class AppConfig {
 
-        @Bean
-        public DataSource dataSource() {
-            BasicDataSource dataSource = new BasicDataSource();
-            dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-            dataSource.setUrl("jdbc:mysql://localhost:3306/mydb");
-            dataSource.setUsername("username");
-            dataSource.setPassword("password");
-            return dataSource;
-        }
-    }
-    ```
+       @Bean
+       public DataSource dataSource() {
+           BasicDataSource dataSource = new BasicDataSource();
+           dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+           dataSource.setUrl("jdbc:mysql://localhost:3306/mydb");
+           dataSource.setUsername("username");
+           dataSource.setPassword("password");
+           return dataSource;
+       }
+   }
+   ```
 
 ### Sub-Annotations:
 
@@ -1123,6 +1131,7 @@ public class AppConfig {
 ```
 
 In these examples:
+
 - `MyCondition` represents a custom condition that determines whether the bean should be registered based on certain conditions.
 - `MyPrototypeBean` is a bean with prototype scope, meaning a new instance is created each time it is requested.
 - `MyLazyBean` is a lazily initialized bean, meaning it is created only when first requested.
@@ -1131,3 +1140,396 @@ In these examples:
 ### Conclusion:
 
 `@Bean` is a powerful annotation in Spring that allows for manual declaration and customization of bean instances within configuration classes. It provides flexibility in defining bean dependencies, configurations, and initialization logic, making it a fundamental building block for configuring Spring applications.
+
+## `@Component`
+
+The `@Component` annotation in Spring is a crucial part of the framework's support for dependency injection and component scanning. It marks a Java class as a Spring component, allowing Spring to automatically detect and register it as a bean within the application context. Here, we'll dive deep into the `@Component` annotation, its subtypes, usage, and related concepts.
+
+### Key Features of `@Component`
+
+1. **Role in Spring**: The `@Component` annotation is a generic stereotype for any Spring-managed component. It is a primary way to indicate that a class should be considered as a Spring bean.
+
+2. **Automatic Detection**: Classes annotated with `@Component` can be automatically detected by Spring's component scanning mechanism. This eliminates the need for explicit bean definitions in XML configuration or `@Configuration` classes.
+
+3. **Meta-Annotation**: `@Component` is a meta-annotation, which means other annotations can be built on top of it. For instance, `@Service`, `@Repository`, and `@Controller` are specialized forms of `@Component`.
+
+### Specialized Stereotype Annotations
+
+These annotations are specialized versions of `@Component`, each serving a distinct role:
+
+- **@Service**: Indicates that a class performs some service, such as business logic or calculations.
+- **@Repository**: Marks a class as a Data Access Object (DAO) and provides an abstraction for data access operations.
+- **@Controller**: Indicates that a class serves as a Spring MVC controller, handling web requests.
+
+### Usage of `@Component`
+
+#### Basic Example
+
+```java
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyComponent {
+
+    public void performTask() {
+        System.out.println("Task performed by MyComponent.");
+    }
+}
+```
+
+#### Spring Boot Application
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class ComponentDemoApplication {
+
+    public static void main(String[] args) {
+        ApplicationContext context = SpringApplication.run(ComponentDemoApplication.class, args);
+        MyComponent myComponent = context.getBean(MyComponent.class);
+        myComponent.performTask();
+    }
+}
+```
+
+### Configuration and Component Scanning
+
+#### Automatic Component Scanning
+
+In a typical Spring Boot application, component scanning is enabled by default through the `@SpringBootApplication` annotation, which implicitly includes `@ComponentScan`. This means Spring Boot will scan the package of the main application class and its sub-packages for components.
+
+#### Customizing Component Scanning
+
+If you need to customize the component scanning behavior, you can use the `@ComponentScan` annotation.
+
+```java
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan(basePackages = "com.example.components")
+public class AppConfig {
+    // Custom configuration
+}
+```
+
+### Sub-Annotations and Their Use Cases
+
+#### @Service
+
+```java
+import org.springframework.stereotype.Service;
+
+@Service
+public class MyService {
+
+    public void executeService() {
+        System.out.println("Service executed by MyService.");
+    }
+}
+```
+
+#### @Repository
+
+```java
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class MyRepository {
+
+    public void accessData() {
+        System.out.println("Data accessed by MyRepository.");
+    }
+}
+```
+
+#### @Controller
+
+```java
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class MyController {
+
+    @GetMapping("/perform")
+    public String perform() {
+        return "Task performed by MyController.";
+    }
+}
+```
+
+### Summary
+
+- **`@Component`**: A general-purpose stereotype annotation for Spring-managed components.
+- **Specialized Annotations**: `@Service`, `@Repository`, `@Controller` provide more semantic meaning and are used for specific purposes.
+- **Automatic Detection**: Classes annotated with `@Component` and its specialized forms are automatically detected and registered by Spring's component scanning mechanism.
+- **Customization**: You can customize component scanning with the `@ComponentScan` annotation if needed.
+
+By understanding and utilizing `@Component` and its specialized annotations effectively, you can create a well-structured, maintainable Spring application.
+
+## `@Service`
+
+The `@Service` annotation in Spring is a specialized form of the `@Component` annotation. It is used to mark a class as a service layer component, which typically contains business logic. Here’s a deep dive into the `@Service` annotation, its purpose, usage, and related concepts.
+
+### Purpose of `@Service`
+
+- **Semantic Clarity**: While `@Service` functions similarly to `@Component`, it provides a clearer semantic meaning, indicating that the class performs service tasks, typically containing business logic.
+- **Layered Architecture**: In a layered architecture, `@Service` helps in organizing and distinguishing between different layers, like controllers, services, and repositories.
+
+### Usage of `@Service`
+
+#### Basic Example
+
+```java
+import org.springframework.stereotype.Service;
+
+@Service
+public class MyService {
+
+    public void executeService() {
+        System.out.println("Service executed by MyService.");
+    }
+}
+```
+
+In this example:
+
+- The `MyService` class is annotated with `@Service`, marking it as a service layer component.
+- The `executeService` method contains the business logic.
+
+#### Spring Boot Application
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class ServiceDemoApplication {
+
+    public static void main(String[] args) {
+        ApplicationContext context = SpringApplication.run(ServiceDemoApplication.class, args);
+        MyService myService = context.getBean(MyService.class);
+        myService.executeService();
+    }
+}
+```
+
+### Dependency Injection with `@Service`
+
+You can inject a `@Service` annotated bean into other components using `@Autowired`.
+
+#### Example with Dependency Injection
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyComponent {
+
+    private final MyService myService;
+
+    @Autowired
+    public MyComponent(MyService myService) {
+        this.myService = myService;
+    }
+
+    public void performTask() {
+        myService.executeService();
+    }
+}
+```
+
+In this example:
+
+- `MyComponent` class is a Spring-managed component that depends on `MyService`.
+- The `MyService` instance is injected into `MyComponent` using constructor injection.
+
+### Configuration and Component Scanning
+
+Spring automatically detects classes annotated with `@Service` during component scanning. In a Spring Boot application, this is typically handled by the `@SpringBootApplication` annotation, which includes `@ComponentScan` by default.
+
+#### Custom Component Scanning
+
+If you need to customize component scanning, you can use the `@ComponentScan` annotation in your configuration class.
+
+```java
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan(basePackages = "com.example.services")
+public class AppConfig {
+    // Custom configuration
+}
+```
+
+### Transaction Management with `@Service`
+
+In service layer components, it is common to manage transactions. You can use the `@Transactional` annotation to manage transactions.
+
+#### Example with `@Transactional`
+
+```java
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class TransactionalService {
+
+    @Transactional
+    public void executeTransaction() {
+        // Business logic with transactional support
+        System.out.println("Transactional service executed.");
+    }
+}
+```
+
+### Specialized Stereotype Annotations
+
+`@Service` is one of the specialized stereotype annotations in Spring, along with `@Controller`, `@Repository`, and `@Component`.
+
+- **`@Controller`**: Used for Spring MVC controllers, handling web requests.
+- **`@Repository`**: Indicates a Data Access Object (DAO) component and provides a cleaner separation of data access logic.
+- **`@Component`**: A generic stereotype for any Spring-managed component.
+
+### Summary
+
+- **`@Service` Annotation**: Indicates that a class is a service layer component, containing business logic.
+- **Semantic Clarity**: Helps in distinguishing service layer beans from other components.
+- **Dependency Injection**: `@Service` beans can be injected into other components using `@Autowired`.
+- **Transaction Management**: Commonly used with `@Transactional` to manage transactions in service layer components.
+- **Component Scanning**: Automatically detected by Spring's component scanning mechanism, especially in Spring Boot applications.
+
+By using the `@Service` annotation appropriately, you can create a well-structured, maintainable service layer in your Spring application.
+
+## `@Component` vs `@Service`
+
+In Spring Framework, both `@Component` and `@Service` are used to declare beans and register them with the Spring container. However, they serve slightly different purposes and are used to indicate different roles within a Spring application. Understanding the differences between these annotations can help in organizing and managing your code more effectively.
+
+### @Component
+
+- **Purpose**: General-purpose stereotype annotation.
+- **Usage**: Used to annotate any class that should be managed by the Spring container.
+- **Flexibility**: Can be used for any Spring-managed component, such as utility classes, helper classes, etc.
+- **Example**:
+
+```java
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyComponent {
+
+    public void doSomething() {
+        System.out.println("Component logic executed!");
+    }
+}
+```
+
+### @Service
+
+- **Purpose**: Specialization of `@Component` to indicate a service class that contains business logic.
+- **Usage**: Used to annotate service-layer classes.
+- **Semantics**: Conveys a more specific role and intent within the application architecture, which is to hold business logic.
+- **Example**:
+
+```java
+import org.springframework.stereotype.Service;
+
+@Service
+public class MyService {
+
+    public String performServiceLogic() {
+        return "Service logic executed!";
+    }
+}
+```
+
+### Differences and When to Use:
+
+1. **Semantics**:
+
+   - `@Component`: Indicates a general-purpose Spring-managed bean.
+   - `@Service`: Specifically indicates that the annotated class holds business logic and is part of the service layer.
+
+2. **Documentation and Clarity**:
+
+   - Using `@Service` instead of `@Component` can make your code more readable and understandable. It provides a clear indication that the class is a service and contains business logic, helping developers to quickly understand the role of the class within the application.
+
+3. **Technical Differences**:
+   - There are no technical differences in terms of functionality. Both annotations result in the class being registered as a bean in the Spring container. The primary difference is semantic and organizational.
+
+### Practical Example:
+
+Let's consider an example with both `@Component` and `@Service` to illustrate their usage in a Spring Boot application.
+
+#### 1. Component Class:
+
+```java
+import org.springframework.stereotype.Component;
+
+@Component
+public class UtilityComponent {
+
+    public String getUtilityData() {
+        return "Utility data";
+    }
+}
+```
+
+#### 2. Service Class:
+
+```java
+import org.springframework.stereotype.Service;
+
+@Service
+public class BusinessService {
+
+    private final UtilityComponent utilityComponent;
+
+    public BusinessService(UtilityComponent utilityComponent) {
+        this.utilityComponent = utilityComponent;
+    }
+
+    public String performBusinessOperation() {
+        return "Business operation with " + utilityComponent.getUtilityData();
+    }
+}
+```
+
+#### 3. Controller Class:
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class MyController {
+
+    @Autowired
+    private BusinessService businessService;
+
+    @GetMapping("/execute")
+    public String execute() {
+        return businessService.performBusinessOperation();
+    }
+}
+```
+
+### Summary:
+
+- **@Component**:
+  - **General Purpose**: Used for any Spring-managed bean.
+  - **Example**: Utility classes, helper classes.
+- **@Service**:
+  - **Specific Purpose**: Used for service-layer classes containing business logic.
+  - **Example**: Service classes handling business operations.
+
+In practice, using `@Service` for service-layer classes and `@Component` for general-purpose beans helps in organizing the application structure and making the codebase more maintainable and understandable.
