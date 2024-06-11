@@ -5438,3 +5438,683 @@ public class KafkaExampleApplication implements CommandLineRunner {
 ### Summary:
 
 Kafka is a distributed event streaming platform used for building real-time data pipelines and streaming applications. In Spring Boot, you can use the `spring-kafka` library to integrate Kafka into your application. This involves configuring Kafka properties, defining Kafka producers and consumers, and publishing/consuming messages from Kafka topics. With Kafka, you can build scalable, fault-tolerant, and real-time streaming applications.
+
+# Testing 
+
+## `@SpringBootTest`
+
+`@SpringBootTest` is an annotation in Spring Boot that is used to write integration tests. It provides a way to create an application context for the tests, enabling you to test the entire application or specific parts of it in a real-world scenario.
+
+### Key Features:
+
+1. **Full Application Context**: Loads the full application context for end-to-end integration tests.
+2. **Spring TestContext Framework**: Integrates with the Spring TestContext framework, providing out-of-the-box testing support.
+3. **Embedded Server**: Can start an embedded server to test web endpoints.
+4. **Profiles and Configurations**: Allows specifying active profiles and additional configurations for the test context.
+
+### Example Usage:
+
+```java
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+public class MyIntegrationTest {
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Test
+    public void testHomeEndpoint() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/", String.class);
+        assertThat(response.getStatusCodeValue()).isEqualTo(200);
+        assertThat(response.getBody()).contains("Welcome to my application");
+    }
+}
+```
+
+### Explanation:
+
+- **@SpringBootTest**: Annotates the class to indicate that it is a Spring Boot test that will load the full application context.
+  - `webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT`: Starts the web server on a random port.
+- **@ActiveProfiles("test")**: Specifies that the `test` profile should be active for this test.
+
+- **TestRestTemplate**: A convenient class provided by Spring Boot for testing RESTful endpoints.
+
+### Web Environment Options:
+
+- **MOCK**: Loads an `ApplicationContext` with a mock servlet environment. This is the default.
+- **RANDOM_PORT**: Starts an embedded web server listening on a random port.
+- **DEFINED_PORT**: Starts an embedded web server listening on the port defined in the application properties.
+- **NONE**: Loads an `ApplicationContext` without an embedded web server.
+
+### Summary:
+
+- **@SpringBootTest**: Used for integration testing in Spring Boot applications, loading the full application context.
+- **Full Context Loading**: Allows for comprehensive tests that cover multiple layers of the application.
+- **Embedded Server Testing**: Supports testing of web endpoints with an embedded server.
+- **Profiles**: Supports the use of profiles to tailor the test environment.
+
+## `@Test`
+
+`@Test` is an annotation provided by the JUnit framework, which is used to define a test method. When a method is annotated with `@Test`, it indicates that the method is a test method that should be executed by the JUnit testing framework.
+
+### Key Features:
+
+1. **Test Method**: Marks a method as a test method.
+2. **No Return Value**: Test methods should not return any value.
+3. **Exception Handling**: Can specify expected exceptions.
+4. **Timeouts**: Can specify timeouts for tests.
+
+### Example Usage:
+
+```java
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class CalculatorTest {
+
+    @Test
+    public void testAddition() {
+        Calculator calculator = new Calculator();
+        int result = calculator.add(2, 3);
+        assertEquals(5, result, "2 + 3 should equal 5");
+    }
+
+    @Test
+    public void testSubtraction() {
+        Calculator calculator = new Calculator();
+        int result = calculator.subtract(5, 3);
+        assertEquals(2, result, "5 - 3 should equal 2");
+    }
+}
+```
+
+### Explanation:
+
+- **@Test**: Marks the `testAddition` and `testSubtraction` methods as test methods.
+- **assertEquals**: Asserts that the expected value matches the actual value returned by the method being tested. If the assertion fails, the test fails.
+
+### Advanced Usage:
+
+1. **Expected Exceptions**: You can specify that a test method is expected to throw a particular exception.
+
+```java
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+public class ExceptionTest {
+
+    @Test
+    public void testForException() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            throw new IllegalArgumentException("Invalid argument");
+        });
+
+        assertEquals("Invalid argument", exception.getMessage());
+    }
+}
+```
+
+2. **Timeouts**: You can specify that a test method must complete within a certain period of time.
+
+```java
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
+import java.time.Duration;
+
+public class TimeoutTest {
+
+    @Test
+    public void testWithTimeout() {
+        assertTimeout(Duration.ofSeconds(1), () -> {
+            // Simulate long-running task
+            Thread.sleep(500);
+        });
+    }
+}
+```
+
+### Summary:
+
+- **@Test**: Marks a method as a test method in JUnit.
+- **Assertions**: Commonly used with assertions to validate the expected outcomes.
+- **Exception Handling**: Can handle expected exceptions using `assertThrows`.
+- **Timeouts**: Ensures that tests complete within a specified time using `assertTimeout`.
+
+Certainly! Here is an explanation of each of these annotations used in testing frameworks such as JUnit and TestNG, particularly in the context of Spring Boot applications.
+
+## JUnit 5 Annotations:
+
+#### @BeforeEach
+
+- **Purpose**: Runs before each test method in the test class.
+- **Use Case**: Set up test data or configure the environment needed for each test.
+- **Example**:
+
+```java
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+public class ExampleTest {
+
+    @BeforeEach
+    public void setup() {
+        // Code to set up test environment
+    }
+
+    @Test
+    public void testExample() {
+        // Test code
+    }
+}
+```
+
+#### @AfterEach
+
+- **Purpose**: Runs after each test method in the test class.
+- **Use Case**: Clean up resources or reset states modified during the test.
+- **Example**:
+
+```java
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
+public class ExampleTest {
+
+    @AfterEach
+    public void cleanup() {
+        // Code to clean up after each test
+    }
+
+    @Test
+    public void testExample() {
+        // Test code
+    }
+}
+```
+
+#### @BeforeAll
+
+- **Purpose**: Runs once before all the test methods in the test class.
+- **Use Case**: Set up expensive resources that are shared among all tests (e.g., a database connection).
+- **Note**: The method annotated with `@BeforeAll` must be static.
+- **Example**:
+
+```java
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+public class ExampleTest {
+
+    @BeforeAll
+    public static void setupAll() {
+        // Code to set up resources before all tests
+    }
+
+    @Test
+    public void testExample() {
+        // Test code
+    }
+}
+```
+
+#### @AfterAll
+
+- **Purpose**: Runs once after all the test methods in the test class.
+- **Use Case**: Clean up expensive resources that are shared among all tests.
+- **Note**: The method annotated with `@AfterAll` must be static.
+- **Example**:
+
+```java
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
+
+public class ExampleTest {
+
+    @AfterAll
+    public static void cleanupAll() {
+        // Code to clean up resources after all tests
+    }
+
+    @Test
+    public void testExample() {
+        // Test code
+    }
+}
+```
+
+### TestNG Annotations:
+
+TestNG provides additional annotations that offer more granular control over the test lifecycle, often used in conjunction with Spring Boot for comprehensive test setups.
+
+#### @BeforeTestClass
+
+- **Purpose**: Runs once before any method in the current test class is invoked.
+- **Use Case**: Initialize resources that are needed across all test methods in the test class.
+- **Example**:
+
+```java
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+public class ExampleTest {
+
+    @BeforeClass
+    public void setupClass() {
+        // Code to set up resources before all tests in this class
+    }
+
+    @Test
+    public void testExample() {
+        // Test code
+    }
+}
+```
+
+#### @AfterTestClass
+
+- **Purpose**: Runs once after all the methods in the current test class have been run.
+- **Use Case**: Clean up resources that are shared across all test methods in the test class.
+- **Example**:
+
+```java
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.Test;
+
+public class ExampleTest {
+
+    @AfterClass
+    public void cleanupClass() {
+        // Code to clean up resources after all tests in this class
+    }
+
+    @Test
+    public void testExample() {
+        // Test code
+    }
+}
+```
+
+#### @BeforeTestMethod
+
+- **Purpose**: Runs before each test method in the test class.
+- **Use Case**: Set up preconditions before each test method (same as `@BeforeEach` in JUnit 5).
+- **Example**:
+
+```java
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+public class ExampleTest {
+
+    @BeforeMethod
+    public void setupMethod() {
+        // Code to set up preconditions before each test method
+    }
+
+    @Test
+    public void testExample() {
+        // Test code
+    }
+}
+```
+
+#### @AfterTestMethod
+
+- **Purpose**: Runs after each test method in the test class.
+- **Use Case**: Clean up after each test method (same as `@AfterEach` in JUnit 5).
+- **Example**:
+
+```java
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+
+public class ExampleTest {
+
+    @AfterMethod
+    public void cleanupMethod() {
+        // Code to clean up after each test method
+    }
+
+    @Test
+    public void testExample() {
+        // Test code
+    }
+}
+```
+
+#### @BeforeSuite
+
+- **Purpose**: Runs once before any of the tests in the suite are run.
+- **Use Case**: Set up global configurations or resources needed for the entire test suite.
+- **Example**:
+
+```java
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
+
+public class ExampleTest {
+
+    @BeforeSuite
+    public void setupSuite() {
+        // Code to set up resources before any tests in the suite
+    }
+
+    @Test
+    public void testExample() {
+        // Test code
+    }
+}
+```
+
+#### @AfterSuite
+
+- **Purpose**: Runs once after all the tests in the suite have been run.
+- **Use Case**: Clean up global configurations or resources used throughout the test suite.
+- **Example**:
+
+```java
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.Test;
+
+public class ExampleTest {
+
+    @AfterSuite
+    public void cleanupSuite() {
+        // Code to clean up resources after all tests in the suite
+    }
+
+    @Test
+    public void testExample() {
+        // Test code
+    }
+}
+```
+
+### Summary
+
+- **JUnit 5 Annotations**:
+  - `@BeforeEach`, `@AfterEach`, `@BeforeAll`, `@AfterAll`
+- **TestNG Annotations**:
+  - `@BeforeTestClass`, `@AfterTestClass`, `@BeforeTestMethod`, `@AfterTestMethod`, `@BeforeSuite`, `@AfterSuite`
+
+These annotations help manage the setup and teardown process for tests, ensuring that tests are isolated and have a consistent environment.
+
+## `@ParameterizedTest`
+
+`@ParameterizedTest` is an annotation provided by JUnit 5 (JUnit Jupiter) that allows you to run the same test with different inputs. It is used for parameterized tests, where the same test logic is executed multiple times with different sets of parameters. This helps in reducing code duplication and improving test coverage by testing different scenarios with various inputs.
+
+### Key Features:
+
+- **Parameterized Tests**: Runs the same test multiple times with different parameters.
+- **Parameter Sources**: Supports various parameter sources such as value sources, method sources, CSV files, and more.
+
+### Example Usage:
+
+1. **@ValueSource**: Provides a simple way to pass a list of values to the test method.
+
+```java
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class ParameterizedTestExample {
+
+    @ParameterizedTest
+    @ValueSource(strings = {"racecar", "radar", "level"})
+    public void testIsPalindrome(String word) {
+        assertTrue(isPalindrome(word));
+    }
+
+    private boolean isPalindrome(String word) {
+        return new StringBuilder(word).reverse().toString().equals(word);
+    }
+}
+```
+
+2. **@CsvSource**: Provides multiple sets of arguments, specified in CSV format.
+
+```java
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class CsvSourceTest {
+
+    @ParameterizedTest
+    @CsvSource({
+        "apple, 5",
+        "banana, 6",
+        "cherry, 6"
+    })
+    public void testWordLength(String word, int expectedLength) {
+        assertEquals(expectedLength, word.length());
+    }
+}
+```
+
+3. **@MethodSource**: Uses a method to provide the arguments for the parameterized test.
+
+```java
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import java.util.stream.Stream;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class MethodSourceTest {
+
+    @ParameterizedTest
+    @MethodSource("stringProvider")
+    public void testIsPalindrome(String word) {
+        assertTrue(isPalindrome(word));
+    }
+
+    private boolean isPalindrome(String word) {
+        return new StringBuilder(word).reverse().toString().equals(word);
+    }
+
+    static Stream<String> stringProvider() {
+        return Stream.of("racecar", "radar", "level");
+    }
+}
+```
+
+4. **@EnumSource**: Provides enum constants as arguments to the parameterized test.
+
+```java
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class EnumSourceTest {
+
+    enum Day { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY }
+
+    @ParameterizedTest
+    @EnumSource(Day.class)
+    public void testIsWeekday(Day day) {
+        assertTrue(day.ordinal() <= Day.FRIDAY.ordinal());
+    }
+}
+```
+
+### Summary:
+
+- **@ParameterizedTest**: An annotation for running the same test with different parameters.
+- **@ValueSource**: Provides simple values such as strings, ints, etc.
+- **@CsvSource**: Provides multiple sets of arguments in CSV format.
+- **@MethodSource**: Uses a method to supply arguments.
+- **@EnumSource**: Provides enum constants as arguments.
+
+These annotations and sources help create flexible and comprehensive tests by allowing the same test logic to be executed with various inputs.
+
+## `@Disabled`
+
+`@Disabled` is an annotation in JUnit 5 (JUnit Jupiter) that is used to temporarily disable a test method or a test class. When a test or class is annotated with `@Disabled`, JUnit will skip the execution of the annotated test or all the tests in the annotated class.
+
+### Key Features:
+
+- **Disable Tests**: Skips the execution of specific test methods or entire test classes.
+- **Documentation**: You can optionally provide a reason for disabling the test, which can be helpful for documentation and future reference.
+
+### Usage:
+
+#### Disabling a Single Test Method:
+
+You can use `@Disabled` to skip the execution of an individual test method. Optionally, you can provide a reason for disabling the test.
+
+```java
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+public class DisabledTestExample {
+
+    @Test
+    public void testEnabled() {
+        // This test will run
+        System.out.println("This test is enabled and will run.");
+    }
+
+    @Disabled("Temporarily disabled until bug #123 is fixed")
+    @Test
+    public void testDisabled() {
+        // This test will be skipped
+        System.out.println("This test is disabled and will not run.");
+    }
+}
+```
+
+#### Disabling an Entire Test Class:
+
+You can use `@Disabled` at the class level to skip all the tests in the class.
+
+```java
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+@Disabled("All tests in this class are disabled")
+public class DisabledClassExample {
+
+    @Test
+    public void test1() {
+        // This test will be skipped
+        System.out.println("This test is disabled and will not run.");
+    }
+
+    @Test
+    public void test2() {
+        // This test will be skipped
+        System.out.println("This test is disabled and will not run.");
+    }
+}
+```
+
+### Summary:
+
+- **Purpose**: Temporarily disables the execution of a test method or an entire test class.
+- **Optional Reason**: Allows for an optional string to specify the reason for disabling, aiding in documentation and future reference.
+- **Use Cases**:
+  - When a test is flaky and needs to be fixed.
+  - When the functionality being tested is temporarily broken or not available.
+  - When you want to exclude certain tests from a test suite temporarily during development or debugging.
+
+By using `@Disabled`, you can manage which tests should be skipped during the test run, providing flexibility and control over the test execution process.
+
+## `@Mock` and `@InjectMocks`
+
+`@Mock` and `@InjectMocks` are annotations provided by the Mockito framework, which is commonly used in unit testing Java applications, including Spring Boot applications. These annotations help to create mock objects and inject them into the class under test, facilitating isolated testing of components.
+
+### @Mock
+
+- **Purpose**: To create a mock instance of a class or an interface.
+- **Use Case**: When you want to create a mock object to simulate the behavior of a real object in a controlled way.
+- **Example**:
+
+```java
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class ExampleServiceTest {
+
+    @Mock
+    private ExampleRepository exampleRepository;
+
+    public ExampleServiceTest() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    public void testGetExample() {
+        when(exampleRepository.findById(1)).thenReturn(new ExampleEntity(1, "Test"));
+
+        ExampleEntity example = exampleRepository.findById(1);
+        assertEquals("Test", example.getName());
+    }
+}
+```
+
+### @InjectMocks
+
+- **Purpose**: To create an instance of the class under test and inject the mock objects into it.
+- **Use Case**: When you want to automatically inject mock dependencies into the class under test.
+- **Example**:
+
+```java
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class ExampleServiceTest {
+
+    @Mock
+    private ExampleRepository exampleRepository;
+
+    @InjectMocks
+    private ExampleService exampleService;
+
+    public ExampleServiceTest() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    public void testGetExample() {
+        when(exampleRepository.findById(1)).thenReturn(new ExampleEntity(1, "Test"));
+
+        ExampleEntity example = exampleService.getExample(1);
+        assertEquals("Test", example.getName());
+    }
+}
+```
+
+### How They Work Together:
+
+1. **@Mock**: Creates a mock instance of the specified class or interface. In the example above, `exampleRepository` is a mock object.
+2. **@InjectMocks**: Creates an instance of the class under test and injects the mock objects into it. In the example above, `exampleService` is the class under test, and `exampleRepository` is injected into it.
+
+### Summary:
+
+- **@Mock**:
+  - **Purpose**: Create mock objects.
+  - **Use Case**: Simulate the behavior of dependencies.
+- **@InjectMocks**:
+  - **Purpose**: Inject mock objects into the class under test.
+  - **Use Case**: Automatically set up dependencies for the class under test.
+
+These annotations simplify the setup of unit tests by automatically creating and injecting mock dependencies, allowing you to focus on testing the behavior of the class under test in isolation.
