@@ -119,7 +119,6 @@ This will generate a WAR file in the `target` directory if your Maven project is
 
 `ps aux | grep 19277`
 
-
 ## `@Component`
 
 The `@Component` annotation is a core part of the Spring Framework and is used to indicate that a class is a Spring-managed bean. In Spring Boot, `@Component` plays a crucial role in enabling the component-scanning mechanism, which automatically detects and registers beans within the application context.

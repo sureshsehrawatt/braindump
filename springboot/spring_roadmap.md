@@ -4,7 +4,7 @@
 
 - [x] Dependency Injection
 - [x] Spring IOC
-- [ ] Spring AOP
+- [x] Spring AOP
 - [ ] Spring Beans
 - [ ] Spring Bean Life Cycle
 - [ ] Spring Bean Scope

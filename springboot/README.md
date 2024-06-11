@@ -324,3 +324,274 @@ In simple terms..
 #### Conclusion
 
 Spring IoC is a powerful mechanism for managing the lifecycle and dependencies of objects in your application. By leveraging Spring IoC and DI, you can achieve better modularity, easier testing, and more maintainable code. Understanding the various types of DI, bean scopes, and lifecycle management in Spring IoC will help you design and develop robust Spring applications.
+
+## Spring AOP
+
+Aspect-Oriented Programming (AOP) is a programming paradigm that aims to increase modularity by allowing the separation of cross-cutting concerns (such as logging, transaction management, security, etc.) from the main business logic. Spring AOP is a key component of the Spring framework that enables aspect-oriented programming in Spring applications.
+
+#### Core Concepts of AOP
+
+1. **Aspect**: A modularization of a concern that cuts across multiple classes. An aspect is a class that implements concerns like logging, transaction management, etc.
+
+2. **Join Point**: A point during the execution of a program, such as the execution of a method or the handling of an exception. In Spring AOP, a join point always represents a method execution.
+
+3. **Advice**: Action taken by an aspect at a particular join point. Different types of advice include "around," "before," and "after" advice.
+
+4. **Pointcut**: A predicate that matches join points. Advice is associated with a pointcut expression and runs at any join point matched by the pointcut.
+
+5. **Introduction**: Declaring additional methods or fields on behalf of a type. Spring AOP allows you to introduce new interfaces (and a corresponding implementation) to any advised object.
+
+6. **Target Object**: The object being advised by one or more aspects. Also referred to as the proxied object in Spring AOP terminology.
+
+7. **AOP Proxy**: An object created by the AOP framework to implement the aspect contracts (advise method executions, etc.). In Spring, an AOP proxy can be either a JDK dynamic proxy or a CGLIB proxy.
+
+8. **Weaving**: The process of linking aspects with other application types or objects to create an advised object. This can be done at compile time, load time, or runtime.
+
+#### Types of Advice
+
+1. **Before Advice**: Executed before a join point.
+2. **After Advice**: Executed after a join point (regardless of the outcome).
+3. **After Returning Advice**: Executed after a join point completes normally.
+4. **After Throwing Advice**: Executed if a method exits by throwing an exception.
+5. **Around Advice**: Surrounds a join point (such as a method invocation). This is the most powerful kind of advice and can control whether the join point proceeds or not.
+
+#### Example Scenario
+
+Consider a scenario where you want to log the execution of methods in your service layer. We will create an aspect that logs method execution before and after the methods are called.
+
+### Step-by-Step Guide
+
+#### Step 1: Add Dependencies
+
+Ensure you have the Spring AOP dependencies in your `pom.xml` if you are using Maven.
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-aop</artifactId>
+</dependency>
+```
+
+#### Step 2: Define a Service
+
+```java
+import org.springframework.stereotype.Service;
+
+@Service
+public class MyService {
+
+    public void performTask() {
+        System.out.println("Performing task...");
+    }
+}
+```
+
+#### Step 3: Define an Aspect
+
+Create an aspect class with advice methods.
+
+```java
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Before("execution(* com.example.service.MyService.performTask(..))")
+    public void logBefore() {
+        System.out.println("Logging before performing task");
+    }
+
+    @After("execution(* com.example.service.MyService.performTask(..))")
+    public void logAfter() {
+        System.out.println("Logging after performing task");
+    }
+
+    @AfterReturning("execution(* com.example.service.MyService.performTask(..))")
+    public void logAfterReturning() {
+        System.out.println("Logging after task completes successfully");
+    }
+
+    @AfterThrowing("execution(* com.example.service.MyService.performTask(..))")
+    public void logAfterThrowing() {
+        System.out.println("Logging after task throws an exception");
+    }
+
+    @Around("execution(* com.example.service.MyService.performTask(..))")
+    public void logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.println("Logging around before performing task");
+        try {
+            joinPoint.proceed();
+        } finally {
+            System.out.println("Logging around after performing task");
+        }
+    }
+}
+```
+
+#### Step 4: Main Application
+
+Create a main application class to run the Spring Boot application.
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+
+@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
+
+        MyService myService = context.getBean(MyService.class);
+        myService.performTask();
+    }
+}
+```
+
+### Explanation
+
+- **@Aspect**: This annotation indicates that the class is an aspect.
+- **@Component**: This annotation makes the aspect class a Spring bean, allowing Spring to detect it and manage its lifecycle.
+- **@Before**: The advice annotated with `@Before` will execute before the specified join point.
+- **@After**: The advice annotated with `@After` will execute after the specified join point, regardless of its outcome.
+- **@AfterReturning**: The advice annotated with `@AfterReturning` will execute after the specified join point completes normally.
+- **@AfterThrowing**: The advice annotated with `@AfterThrowing` will execute if the specified join point exits by throwing an exception.
+- **@Around**: The advice annotated with `@Around` will surround the specified join point, allowing it to control whether the join point proceeds.
+
+### Output
+
+When you run the application, the following will be printed:
+
+```
+Logging before performing task
+Logging around before performing task
+Performing task...
+Logging around after performing task
+Logging after task completes successfully
+Logging after performing task
+```
+
+Another example
+
+Sure! Let's create a simple and clear example of using Spring AOP to log method execution times in a service class.
+
+### Step-by-Step Guide
+
+#### Step 1: Add Dependencies
+
+Ensure you have the Spring AOP dependency in your `pom.xml` if you are using Maven.
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-aop</artifactId>
+</dependency>
+```
+
+#### Step 2: Define a Service
+
+Create a service class where we will log the execution time of a method.
+
+```java
+package com.example.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class MyService {
+
+    public void performTask() {
+        // Simulating a task by sleeping for 1 second
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Task performed");
+    }
+}
+```
+
+#### Step 3: Define an Aspect
+
+Create an aspect class with advice methods to log the execution time.
+
+```java
+package com.example.aspect;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Around("execution(* com.example.service.MyService.performTask(..))")
+    public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+
+        Object proceed = joinPoint.proceed();
+
+        long executionTime = System.currentTimeMillis() - start;
+
+        System.out.println(joinPoint.getSignature() + " executed in " + executionTime + "ms");
+        return proceed;
+    }
+}
+```
+
+#### Step 4: Main Application
+
+Create a main application class to run the Spring Boot application.
+
+```java
+package com.example;
+
+import com.example.service.MyService;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+
+@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
+
+        MyService myService = context.getBean(MyService.class);
+        myService.performTask();
+    }
+}
+```
+
+### Explanation
+
+- **Service Class (`MyService`)**: This class contains a method `performTask()` which simulates a task by sleeping for one second.
+- **Aspect Class (`LoggingAspect`)**: This class is annotated with `@Aspect` and `@Component` to make it a Spring-managed bean and to define it as an aspect. The `logExecutionTime` method is annotated with `@Around` to execute around the `performTask` method. It logs the time taken to execute the method.
+- **Main Application (`Application`)**: This class is the entry point of the Spring Boot application. It retrieves the `MyService` bean from the application context and calls the `performTask` method.
+
+### Output
+
+When you run the application, the following will be printed:
+
+```
+Task performed
+void com.example.service.MyService.performTask() executed in 1001ms
+```
+
+This output shows that the `performTask` method was executed, and the aspect logged the execution time of the method.
+
+### Conclusion
+
+Spring AOP is a powerful tool for implementing cross-cutting concerns in a clean, modular way. By using aspects, you can keep your business logic clean and separate from concerns like logging, transaction management, and security. This results in more maintainable and testable code. Understanding the core concepts of Spring AOP and how to use different types of advice can greatly enhance your ability to write clean, modular, and efficient Spring applications.
